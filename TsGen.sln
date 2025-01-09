@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TsGen", "TsGen\TsGen.csproj", "{595F9E07-107D-4CC4-9F2E-6D0F5C852CEF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestTsGen", "TestTsGen\TestTsGen.csproj", "{8B59D90B-D09C-4A1A-B43C-C32CBB6F6C60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsGenCli", "TsGenCli\TsGenCli.csproj", "{62EBA7BA-4869-49C5-826C-EBDE4A3B9396}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{595F9E07-107D-4CC4-9F2E-6D0F5C852CEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{595F9E07-107D-4CC4-9F2E-6D0F5C852CEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{595F9E07-107D-4CC4-9F2E-6D0F5C852CEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{595F9E07-107D-4CC4-9F2E-6D0F5C852CEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B59D90B-D09C-4A1A-B43C-C32CBB6F6C60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B59D90B-D09C-4A1A-B43C-C32CBB6F6C60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B59D90B-D09C-4A1A-B43C-C32CBB6F6C60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B59D90B-D09C-4A1A-B43C-C32CBB6F6C60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62EBA7BA-4869-49C5-826C-EBDE4A3B9396}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62EBA7BA-4869-49C5-826C-EBDE4A3B9396}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62EBA7BA-4869-49C5-826C-EBDE4A3B9396}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62EBA7BA-4869-49C5-826C-EBDE4A3B9396}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3938406F-3F94-45A0-89BC-2FCDC337D17C}
+	EndGlobalSection
+EndGlobal
