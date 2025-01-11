@@ -15,7 +15,7 @@ namespace TestTsGen
         private int PrivateField { get; set; }
     }
 
-    [TsGen(typeof(InterfaceBuilder))]
+    [TsGen(typeof(TypeBuilder))]
     internal record TestRecord2(int Id, string? Text, string? Info, long Index, bool IsValid);
 
     [TsGen]

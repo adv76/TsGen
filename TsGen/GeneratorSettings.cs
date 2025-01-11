@@ -4,12 +4,21 @@ using TsGen.Interfaces;
 
 namespace TsGen
 {
-    public static class GeneratorSettings
+    public abstract class GeneratorSettingsBase
     {
-        public static JsonNamingPolicy PropertyNamingPolicy { get; internal set; } = JsonNamingPolicy.CamelCase;
+        public abstract JsonNamingPolicy PropertyNamingPolicy { get; }
 
-        public static ITypeBuilder DefaultTypeBuilder { get; internal set; } = new TypeBuilder();
+        public abstract ITypeBuilder DefaultTypeBuilder { get; }
 
-        public static string BaseDirectory { get; internal set; } = @"C:\Users\adv\Documents\test-ts";
+        public abstract string OutputDirectory { get; }
+    }
+
+    public sealed class DefaultGeneratorSettings : GeneratorSettingsBase
+    {
+        public override JsonNamingPolicy PropertyNamingPolicy { get; } = JsonNamingPolicy.CamelCase;
+
+        public override ITypeBuilder DefaultTypeBuilder { get; } = new TypeBuilder();
+
+        public override string OutputDirectory { get; } = @"C:\Users\adv\Documents\test-ts";
     }
 }

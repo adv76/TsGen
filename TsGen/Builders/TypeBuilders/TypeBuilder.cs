@@ -49,7 +49,7 @@ namespace TsGen.Builders.TypeBuilders
 
             foreach (var property in properties)
             {
-                var name = GeneratorSettings.PropertyNamingPolicy.ConvertName(property.Name);
+                var name = new DefaultGeneratorSettings().PropertyNamingPolicy.ConvertName(property.Name);
 
                 var nullable = property.IsNullable(out var propType);
 

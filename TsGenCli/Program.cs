@@ -32,18 +32,52 @@ if (process is not null)
             var assemblyPath = buildResult.TargetResults.Build.Items[0].FullPath;
 
             var assembly = Assembly.LoadFile(assemblyPath);
-            var tsFiles = assembly.GenerateTypeFiles();
 
-            foreach (var file in tsFiles)
+            var genSettingsTypes = assembly.GetTypes()
+                .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(GeneratorSettingsBase)));
+
+            GeneratorSettingsBase generatorSettings;
+
+            int count = genSettingsTypes.Count();
+            if (count == 0)
             {
-                var path = file.ToFile(GeneratorSettings.BaseDirectory, out var fileContents);
+                Console.WriteLine("No generator settings gound.");
+                Console.WriteLine("Using DefaultGeneratorSettings instead.");
 
-                Console.WriteLine(path);
-                Console.WriteLine();
-                Console.WriteLine(fileContents);
-                Console.WriteLine("---------------------------------");
-                Console.WriteLine();
+                generatorSettings = new DefaultGeneratorSettings();
             }
+            else if (count == 1)
+            {
+                var settingsType = genSettingsTypes.First();
+
+                Console.WriteLine($"Using {settingsType.Name} to generate types.");
+
+                generatorSettings = (GeneratorSettingsBase)Activator.CreateInstance(settingsType)!;
+            }
+            else
+            {
+                var settingsType = genSettingsTypes.First();
+
+                Console.WriteLine("Multiple generator settings were found.");
+                Console.WriteLine($"Using {settingsType.Name} to generate types.");
+
+                generatorSettings = (GeneratorSettingsBase)Activator.CreateInstance(settingsType)!;
+            }
+
+            var tsFiles = assembly.GenerateTypeFiles(generatorSettings);
+
+            await assembly.GenerateAndOutputTypeFilesAsync(generatorSettings);
+
+            //foreach (var file in tsFiles)
+            //{
+            //    var path = file.ToFile(generatorSettings.OutputDirectory, out var fileContents);
+
+            //    Console.WriteLine(path);
+            //    Console.WriteLine();
+            //    Console.WriteLine(fileContents);
+            //    Console.WriteLine("---------------------------------");
+            //    Console.WriteLine();
+            //}
         }
         else
         {
