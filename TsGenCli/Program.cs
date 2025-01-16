@@ -1,10 +1,11 @@
-﻿using System.Diagnostics;
-using System.Reflection;
-using System.Text.Json;
-using TsGen;
-using TsGen.Extensions;
-using TsGenCli;
+﻿using Spectre.Console.Cli;
+using TsGenCli.Commands;
 
+var app = new CommandApp<GenerateCommand>();
+
+return await app.RunAsync(args);
+
+/*
 var processInfo = new ProcessStartInfo()
 {
     FileName = "dotnet",
@@ -85,3 +86,4 @@ if (process is not null)
         }
     }
 }
+*/

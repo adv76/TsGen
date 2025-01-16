@@ -7,10 +7,10 @@ namespace TestTsGen
 {
     internal class TestGenSettings : GeneratorSettingsBase
     {
-        public override JsonNamingPolicy PropertyNamingPolicy => JsonNamingPolicy.CamelCase;
+        public override JsonNamingPolicy PropertyNamingPolicy { get; set; } = JsonNamingPolicy.CamelCase;
 
-        public override ITypeBuilder DefaultTypeBuilder => new TypeBuilder();
+        public override ITypeBuilder DefaultTypeBuilder { get; set; } = new TypeBuilder();
 
-        public override string OutputDirectory => @"C:\Users\adv\Documents\types";
+        public override string OutputDirectory { get; set; } = @"C:\Users\adv\Documents\types";
     }
 }
