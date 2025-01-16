@@ -18,6 +18,8 @@
     <Description>Typescript Type Generator .NET Tool</Description>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Version>1.0.0-alpha.1</Version>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>

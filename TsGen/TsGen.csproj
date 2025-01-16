@@ -16,6 +16,8 @@
     <PackageReleaseNotes>Beta release just for initial testing</PackageReleaseNotes>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Version>1.0.0-alpha.1</Version>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
