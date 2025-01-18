@@ -18,7 +18,7 @@ namespace TsGen.Builders.PropertyBuilders
             {
                 var genericParamTypes = genericDictionary.GetGenericArguments();
 
-                return new PropertyDef(name, optional, $"Record<{genericParamTypes[0].Name}, {genericParamTypes[1].Name}>", [genericParamTypes[0], genericParamTypes[1]]);
+                return new PropertyDef(name, optional, $"Record<{genericParamTypes[0].Name}, {genericParamTypes[1].Name}>", genericParamTypes[0], genericParamTypes[1]);
             }
 
             var dictionary = interfaces.FirstOrDefault(i => i == typeof(IDictionary));
@@ -32,7 +32,7 @@ namespace TsGen.Builders.PropertyBuilders
             {
                 var genericParamTypes = genericEnumerable.GetGenericArguments();
 
-                return new PropertyDef(name, optional, genericParamTypes[0].Name, [genericParamTypes[0]]);
+                return new PropertyDef(name, optional, genericParamTypes[0].Name, genericParamTypes[0]);
             }
 
             var enumerable = interfaces.FirstOrDefault(i => i == typeof(IEnumerable));

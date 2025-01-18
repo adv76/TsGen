@@ -7,8 +7,8 @@ namespace TsGen.Models
         public string Namespace { get; set; } = string.Empty;
         public string RelativePath { get; set; } = string.Empty;
 
-        public List<string> Imports { get; set; } = [];
-        public Dictionary<Type, string> TypeMap { get; set; } = [];
+        public List<string> Imports { get; set; } = new List<string>();
+        public Dictionary<Type, string> TypeMap { get; set; } = new Dictionary<Type, string>();
 
         public string ToFile(string basePath, out string fileContents)
         {

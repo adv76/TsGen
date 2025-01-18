@@ -7,7 +7,7 @@ namespace TsGen.TypeResolvers
     {
         public ResolvedType Resolve(Type type, bool optional, ITypeResolver recursiveResolver)
         {
-            return new ResolvedType(optional, type.Name, [type]);
+            return new ResolvedType(optional, type.Name, type);
         }
     }
 }

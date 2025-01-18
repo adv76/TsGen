@@ -9,7 +9,7 @@ namespace TsGen.Builders.PropertyBuilders
 
         public PropertyDef Build(string name, Type type, bool optional)
         {
-            return new PropertyDef(name, optional, type.Name, [type]);
+            return new PropertyDef(name, optional, type.Name, type);
         }
     }
 }

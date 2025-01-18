@@ -4,19 +4,34 @@
     {
         public bool Optional { get; set; } = false;
         public string TypeName { get; set; } = string.Empty;
-        public List<Type> DependentTypes { get; set; } = [];
+        public List<Type> DependentTypes { get; set; }
 
-        public ResolvedType() { }
+        public ResolvedType() 
+        { 
+            DependentTypes = new List<Type>();
+        }
 
-        public ResolvedType(bool optional, string typeName, List<Type>? dependentTypes = null)
+        public ResolvedType(bool optional, string typeName)
+        {
+            Optional = optional;
+            TypeName = typeName;
+            DependentTypes = new List<Type>();
+        }
+
+        public ResolvedType(bool optional, string typeName, params Type[] dependentType)
         {
             Optional = optional;
             TypeName = typeName;
 
-            if (dependentTypes is not null)
-            {
-                DependentTypes = dependentTypes;
-            }
+            DependentTypes = new List<Type>();
+            DependentTypes.AddRange(dependentType);
+        }
+
+        public ResolvedType(bool optional, string typeName, List<Type> dependentTypes)
+        {
+            Optional = optional;
+            TypeName = typeName;
+            DependentTypes = dependentTypes;
         }
     }
 }

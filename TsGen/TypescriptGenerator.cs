@@ -121,7 +121,7 @@ namespace TsGen
             
 
             var dependentTypes = typeDefs
-                .SelectMany(td => td.DependentTypes ?? []);
+                .SelectMany(td => td.DependentTypes);
 
             if (dependentTypes.Any() && level < MaxRecursionIterations)
             {

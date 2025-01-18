@@ -16,10 +16,21 @@ namespace TsGen.TypeResolvers
             {
                 var genericParamTypes = genericDictionary.GetGenericArguments();
 
-                var genericType0 = recursiveResolver.Resolve(genericParamTypes[0], false, recursiveResolver);
-                var genericType1 = recursiveResolver.Resolve(genericParamTypes[1], false, recursiveResolver);
+                var deptTypes = new List<Type>();
 
-                return new ResolvedType(optional, $"Record<{genericType0?.TypeName ?? "any"}, {genericType1?.TypeName ?? "any"}>", [..(genericType0?.DependentTypes ?? []), ..(genericType1?.DependentTypes ?? [])]);
+                var genericType0 = recursiveResolver.Resolve(genericParamTypes[0], false, recursiveResolver);
+                if (genericType0 is not null)
+                {
+                    deptTypes.AddRange(genericType0.DependentTypes);
+                }
+
+                var genericType1 = recursiveResolver.Resolve(genericParamTypes[1], false, recursiveResolver);
+                if (genericType1 is not null)
+                {
+                    deptTypes.AddRange(genericType1.DependentTypes);
+                }
+
+                return new ResolvedType(optional, $"Record<{genericType0?.TypeName ?? "any"}, {genericType1?.TypeName ?? "any"}>", deptTypes);
             }
 
             var dictionary = interfaces.FirstOrDefault(i => i == typeof(IDictionary));
@@ -33,9 +44,15 @@ namespace TsGen.TypeResolvers
             {
                 var genericParamTypes = genericEnumerable.GetGenericArguments();
 
-                var genericType0 = recursiveResolver.Resolve(genericParamTypes[0], false, recursiveResolver);
+                var deptTypes = new List<Type>();
 
-                return new ResolvedType(optional, $"{genericType0?.TypeName ?? "any"}[]", genericType0?.DependentTypes ?? []);
+                var genericType0 = recursiveResolver.Resolve(genericParamTypes[0], false, recursiveResolver);
+                if (genericType0 is not null)
+                {
+                    deptTypes.AddRange(genericType0.DependentTypes);
+                }
+
+                return new ResolvedType(optional, $"{genericType0?.TypeName ?? "any"}[]", deptTypes);
             }
 
             var enumerable = interfaces.FirstOrDefault(i => i == typeof(IEnumerable));
