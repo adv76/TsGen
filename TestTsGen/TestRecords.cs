@@ -1,17 +1,21 @@
-﻿using Random.Records;
+﻿using Microsoft.EntityFrameworkCore;
+using Random.Records;
+using System.Text.Json.Serialization;
 using TsGen.Attributes;
 using TsGen.Builders.TypeBuilders;
 
 namespace TestTsGen
 {
+    [Index(nameof(Id))]
     [TsGen]
     internal class TestRecord1
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        [JsonPropertyName("DescriptionCustomName")]
         public string? Description { get; set; }
         public DateTime? Date { get; set; }
-        [TsPropGen]
+        [TsPropGen("any")]
         private int PrivateField { get; set; }
     }
 

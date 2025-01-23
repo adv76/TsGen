@@ -95,12 +95,12 @@ namespace TsGenCli.Commands
                         AnsiConsole.MarkupLine("[Green]Build Succeeded![/]");
 
                         var assemblyPath = buildResult.TargetResults.Build.Items[0].FullPath;
-                        var assembly = Assembly.LoadFile(assemblyPath);
+                        var assembly = Assembly.LoadFrom(assemblyPath);
 
                         var genSettingsTypes = assembly.GetTypes()
-                            .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(GeneratorSettingsBase)));
+                            .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(TsGenSettings)));
 
-                        GeneratorSettingsBase generatorSettings;
+                        TsGenSettings generatorSettings;
 
                         int count = genSettingsTypes.Count();
                         if (count == 0)
@@ -108,7 +108,7 @@ namespace TsGenCli.Commands
                             AnsiConsole.MarkupLine("[yellow]No generator settings found.[/]");
                             AnsiConsole.MarkupLine("[yellow]Using DefaultGeneratorSettings instead.[/]");
 
-                            generatorSettings = new DefaultGeneratorSettings();
+                            generatorSettings = new TsGenSettings();
                         }
                         else if (count == 1)
                         {
@@ -116,7 +116,7 @@ namespace TsGenCli.Commands
 
                             AnsiConsole.MarkupLineInterpolated($"[Yellow]Using {settingsType.Name} to generate types.[/]");
 
-                            generatorSettings = (GeneratorSettingsBase)Activator.CreateInstance(settingsType)!;
+                            generatorSettings = (TsGenSettings)Activator.CreateInstance(settingsType)!;
                         }
                         else
                         {
@@ -125,7 +125,7 @@ namespace TsGenCli.Commands
                             AnsiConsole.MarkupLine("[Yellow]Multiple generator settings were found.[/]");
                             AnsiConsole.MarkupLineInterpolated($"[Yellow]Using {settingsType.Name} to generate types.[/]");
 
-                            generatorSettings = (GeneratorSettingsBase)Activator.CreateInstance(settingsType)!;
+                            generatorSettings = (TsGenSettings)Activator.CreateInstance(settingsType)!;
                         }
 
                         if (settings.OutputDirectory is not null)

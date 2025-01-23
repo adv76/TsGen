@@ -2,11 +2,11 @@
 using TsGen;
 using TsGen.Extensions;
 
-var files = Assembly.GetExecutingAssembly().GenerateTypeFiles(new DefaultGeneratorSettings());
+var files = Assembly.GetExecutingAssembly().GenerateTypeFiles(new TsGenSettings());
 
 foreach (var file in files)
 {
-    var path = file.ToFile(new DefaultGeneratorSettings().OutputDirectory, out var fileContents);
+    var path = file.ToFile(new TsGenSettings().OutputDirectory, out var fileContents);
 
     Console.WriteLine(path);
     Console.WriteLine();

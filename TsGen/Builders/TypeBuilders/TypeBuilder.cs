@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 using TsGen.Attributes;
 using TsGen.Builders.PropertyBuilders;
 using TsGen.Extensions;
@@ -14,7 +15,8 @@ namespace TsGen.Builders.TypeBuilders
         public TypeDef Build(Type type, bool export)
         {
             var properties = type.GetProperties()
-                .Union(type.GetPropertiesWithAttribute<TsPropGenAttribute>());
+                .Union(type.GetPropertiesWithAttribute<TsPropGenAttribute>())
+                .Union(type.GetPropertiesWithAttribute<JsonIncludeAttribute>());
 
             var stringBldr = new StringBuilder();
 
@@ -31,8 +33,7 @@ namespace TsGen.Builders.TypeBuilders
             var propertyBldr = new DefaultPropertyBuilder();
 
             var deptTypes = propDefs
-                .Where(p => p.DependentTypes is not null)
-                .SelectMany(p => p.DependentTypes!)
+                .SelectMany(p => p.DependentTypes)
                 .Distinct();
 
             return new TypeDef(type, stringBldr.ToString(), deptTypes.ToList());
@@ -42,19 +43,36 @@ namespace TsGen.Builders.TypeBuilders
         {
             var propDefs = new List<PropertyDef>();
 
-            //var propertyBldr = new DefaultPropertyBuilder();
-            //var fallbackBldr = new FallbackPropertyBuilder();
-
             var resolver = new DefaultTypeResolver();
 
             foreach (var property in properties)
             {
-                var name = new DefaultGeneratorSettings().PropertyNamingPolicy.ConvertName(property.Name);
+                string propName;
+
+                var jsonPropNameAttr = property.GetCustomAttribute<JsonPropertyNameAttribute>();
+                if (jsonPropNameAttr is not null)
+                {
+                    propName = jsonPropNameAttr.Name;
+                }
+                else
+                {
+                    propName = new TsGenSettings().PropertyNamingPolicy.ConvertName(property.Name);
+                }
 
                 var nullable = property.IsNullable(out var propType);
 
-                //var propertyDef = propertyBldr.Build(name, propType, nullable) ?? fallbackBldr.Build(name, propType, nullable);
-                var propertyDef = new PropertyDef(name, resolver.Resolve(propType, nullable, resolver) ?? new ResolvedType(nullable, "unknown"));
+                PropertyDef propertyDef;
+
+                var tsPropGenAttr = property.GetCustomAttribute<TsPropGenAttribute>();
+                if (tsPropGenAttr is not null && tsPropGenAttr.HasCustomType)
+                {
+                    propertyDef = new PropertyDef(propName, new ResolvedType(nullable, tsPropGenAttr.CustomType));
+                }
+                else
+                {
+                    propertyDef = new PropertyDef(propName, resolver.Resolve(propType, nullable, resolver) ?? new ResolvedType(nullable, "unknown"));
+                }
+                
                 propDefs.Add(propertyDef);
 
                 stringBldr.Append("  ");

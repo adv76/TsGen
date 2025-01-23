@@ -9,13 +9,13 @@ namespace TsGen
     {
         private const int MaxRecursionIterations = 5;
 
-        public static IEnumerable<TypeDef> GenerateTypeDefs(Assembly assembly, GeneratorSettingsBase generatorSettings)
+        public static IEnumerable<TypeDef> GenerateTypeDefs(Assembly assembly, TsGenSettings generatorSettings)
             => GenerateTypeDefsInternal(assembly.GetTypes().Where(t => Attribute.IsDefined(t, typeof(TsGenAttribute))), generatorSettings);
 
-        public static IEnumerable<TypeDef> GenerateTypeDefs(IEnumerable<Type> types, GeneratorSettingsBase generatorSettings)
+        public static IEnumerable<TypeDef> GenerateTypeDefs(IEnumerable<Type> types, TsGenSettings generatorSettings)
             => GenerateTypeDefsInternal(types, generatorSettings);
 
-        public static IEnumerable<TypeFile> GenerateTypeFiles(Assembly assembly, GeneratorSettingsBase generatorSettings)
+        public static IEnumerable<TypeFile> GenerateTypeFiles(Assembly assembly, TsGenSettings generatorSettings)
         {
             var typeFiles = new List<TypeFile>();
 
@@ -51,7 +51,7 @@ namespace TsGen
             return typeFiles;
         }
 
-        public static IEnumerable<TypeFile> GenerateTypeFiles(IEnumerable<Type> types, GeneratorSettingsBase generatorSettings)
+        public static IEnumerable<TypeFile> GenerateTypeFiles(IEnumerable<Type> types, TsGenSettings generatorSettings)
         {
             var typeFiles = new List<TypeFile>();
 
@@ -87,7 +87,7 @@ namespace TsGen
             return typeFiles;
         }
 
-        public static void GenerateAndOutputTypeFiles(Assembly assembly, GeneratorSettingsBase generatorSettings)
+        public static void GenerateAndOutputTypeFiles(Assembly assembly, TsGenSettings generatorSettings)
         {
             var typeFiles = GenerateTypeFiles(assembly, generatorSettings);
 
@@ -100,7 +100,7 @@ namespace TsGen
             }
         }
 
-        public static async Task GenerateAndOutputTypeFilesAsync(Assembly assembly, GeneratorSettingsBase generatorSettings)
+        public static async Task GenerateAndOutputTypeFilesAsync(Assembly assembly, TsGenSettings generatorSettings)
         {
             var typeFiles = GenerateTypeFiles(assembly, generatorSettings);
 
@@ -113,7 +113,7 @@ namespace TsGen
             }
         }
 
-        private static IEnumerable<TypeDef> GenerateTypeDefsInternal(IEnumerable<Type> types, GeneratorSettingsBase generatorSettings, int level = 0)
+        private static IEnumerable<TypeDef> GenerateTypeDefsInternal(IEnumerable<Type> types, TsGenSettings generatorSettings, int level = 0)
         {
             var typeDefs = types
                 .Select(t => new { Type = t, TsGenProps = t.GetCustomAttribute<TsGenAttribute>() })
