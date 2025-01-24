@@ -37,7 +37,7 @@ namespace TsGen.Models
 
             foreach (var type in TypeMap)
             {
-                strBldr.AppendLine($"// {type.Key.FullName}");
+                strBldr.AppendLine($"// {type.Key.ToString()}");
                 strBldr.AppendLine(type.Value);
             }
 

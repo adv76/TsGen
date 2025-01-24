@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using TsGen.Attributes;
+using TsGen.Extensions;
 using TsGen.Interfaces;
 using TsGen.Models;
 
@@ -37,7 +38,7 @@ namespace TsGen
                     var depNs = dep.Key ?? string.Empty;
                     var depPath = depNs.Replace('.', '/');
 
-                    typeFile.Imports.Add($"import {{ {string.Join(", ", dep.Select(dep => dep.Name))} }} from {Path.GetRelativePath(ns, depPath).Replace('\\', '/')};");
+                    typeFile.Imports.Add($"import {{ {string.Join(", ", dep.Select(dep => dep.Name.Sanitize()).Distinct())} }} from \"{Path.GetRelativePath(ns, depPath).Replace('\\', '/')}\";");
                 }
 
                 foreach (var type in typeGroup)
@@ -73,7 +74,7 @@ namespace TsGen
                     var depNs = dep.Key ?? string.Empty;
                     var depPath = depNs.Replace('.', '/');
 
-                    typeFile.Imports.Add($"import {{ { string.Join(", ", dep.Select(dep => dep.Name)) } }} from {Path.GetRelativePath(ns, depPath).Replace('\\', '/')};");
+                    typeFile.Imports.Add($"import {{ { string.Join(", ", dep.Select(dep => dep.Name.Sanitize()).Distinct()) } }} from {Path.GetRelativePath(ns, depPath).Replace('\\', '/')};");
                 }
                 
                 foreach (var type in typeGroup)

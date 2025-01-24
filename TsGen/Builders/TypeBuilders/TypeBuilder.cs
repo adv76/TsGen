@@ -16,14 +16,15 @@ namespace TsGen.Builders.TypeBuilders
         {
             var properties = type.GetProperties()
                 .Union(type.GetPropertiesWithAttribute<TsPropGenAttribute>())
-                .Union(type.GetPropertiesWithAttribute<JsonIncludeAttribute>());
+                .Union(type.GetPropertiesWithAttribute<JsonIncludeAttribute>())
+                .Except(type.GetPropertiesWithAttribute<JsonIgnoreAttribute>());
 
             var stringBldr = new StringBuilder();
 
             if (export) stringBldr.Append("export ");
 
             stringBldr.Append("type ");
-            stringBldr.Append(type.Name);
+            stringBldr.Append(type.Name.Sanitize());
             stringBldr.AppendLine(" = {");
 
             var propDefs = OutputProperties(properties, stringBldr);
@@ -84,7 +85,7 @@ namespace TsGen.Builders.TypeBuilders
                 }
 
                 stringBldr.Append(": ");
-                stringBldr.Append(propertyDef.TypeName);
+                stringBldr.Append(propertyDef.TypeName.Sanitize());
                 stringBldr.AppendLine(";");
             }
 

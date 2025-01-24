@@ -9,9 +9,11 @@ namespace TsGen.TypeResolvers
         public ResolvedType? Resolve(Type type, bool optional, ITypeResolver recursiveResolver)
         {
             var interfaces = type.GetInterfaces();
-            if (interfaces.Length == 0) return null;
 
-            var genericDictionary = interfaces.FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+            var genericDictionary = type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IDictionary<,>)
+                ? type
+                : interfaces.FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+
             if (genericDictionary is not null)
             {
                 var genericParamTypes = genericDictionary.GetGenericArguments();
@@ -33,13 +35,19 @@ namespace TsGen.TypeResolvers
                 return new ResolvedType(optional, $"Record<{genericType0?.TypeName ?? "any"}, {genericType1?.TypeName ?? "any"}>", deptTypes);
             }
 
-            var dictionary = interfaces.FirstOrDefault(i => i == typeof(IDictionary));
+            var dictionary = type == typeof(IDictionary)
+                ? type
+                : interfaces.FirstOrDefault(i => i == typeof(IDictionary));
+
             if (dictionary is not null)
             {
                 return new ResolvedType(optional, "Record<any, any>");
             }
 
-            var genericEnumerable = interfaces.FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+            var genericEnumerable = type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>)
+                ? type 
+                : interfaces.FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+            
             if (genericEnumerable is not null)
             {
                 var genericParamTypes = genericEnumerable.GetGenericArguments();
@@ -55,7 +63,10 @@ namespace TsGen.TypeResolvers
                 return new ResolvedType(optional, $"{genericType0?.TypeName ?? "any"}[]", deptTypes);
             }
 
-            var enumerable = interfaces.FirstOrDefault(i => i == typeof(IEnumerable));
+            var enumerable = type == typeof(IEnumerable)
+                ? type
+                : interfaces.FirstOrDefault(i => i == typeof(IEnumerable));
+
             if (enumerable is not null)
             {
                 return new ResolvedType(optional, "any[]");

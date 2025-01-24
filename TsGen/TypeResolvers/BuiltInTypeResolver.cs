@@ -22,7 +22,8 @@ namespace TsGen.TypeResolvers
             { typeof(ulong), "number" },
             { typeof(short), "number" },
             { typeof(ushort), "number" },
-            { typeof(string), "string" }
+            { typeof(string), "string" },
+            { typeof(Guid), "string" }
         };
 
         public ResolvedType? Resolve(Type type, bool optional, ITypeResolver recursiveResolver)

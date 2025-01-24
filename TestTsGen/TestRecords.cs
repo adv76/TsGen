@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Random.Records;
+using System.Collections;
 using System.Text.Json.Serialization;
 using TsGen.Attributes;
 using TsGen.Builders.TypeBuilders;
@@ -17,18 +18,27 @@ namespace TestTsGen
         public DateTime? Date { get; set; }
         [TsPropGen("any")]
         private int PrivateField { get; set; }
+        [JsonIgnore]
+        public int IgnoreThisProperty { get; set; }
     }
 
     [TsGen(typeof(TypeBuilder))]
     internal record TestRecord2(int Id, string? Text, string? Info, long Index, bool IsValid);
 
     [TsGen]
-    internal record TestRecord3(List<int> List, HashSet<int> Set, Dictionary<int, int> Dict);
+    internal record TestRecord3(List<int> List, HashSet<int> Set, Dictionary<int, int> Dict, IList<int> IList, IEnumerable<int> IEnumerable, IDictionary<int, int> IDict, IEnumerable IEnumerableNonGen);
 
     [TsGen]
     internal record TestRecord4(int Id, TestRecord5 Record5);
 
-    
+    [TsGen]
+    internal class TestClass1
+    {
+        public Guid Id { get; set; }
+        public Guid Id2 { get; set; }
+        public KeyValuePair<string, int> Kvp1 { get; set; }
+        public KeyValuePair<string, double> Kvp2 { get; set; }
+    }
 
     
 }
