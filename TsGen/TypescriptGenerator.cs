@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using TsGen.Attributes;
+using TsGen.Builders.TypeBuilders;
 using TsGen.Extensions;
 using TsGen.Interfaces;
 using TsGen.Models;
@@ -118,7 +119,11 @@ namespace TsGen
         {
             var typeDefs = types
                 .Select(t => new { Type = t, TsGenProps = t.GetCustomAttribute<TsGenAttribute>() })
-                .Select(t => ((t.TsGenProps?.HasCustomTypeBuilder ?? false) ? t.TsGenProps.TypeBuilder : generatorSettings.DefaultTypeBuilder).Build(t.Type, true));
+                .Select(t => ((t.TsGenProps?.HasCustomTypeBuilder ?? false) 
+                    ? t.TsGenProps.TypeBuilder 
+                    : t.Type.IsEnum
+                        ? new EnumBuilder()
+                        : generatorSettings.DefaultTypeBuilder).Build(t.Type, true));
             
 
             var dependentTypes = typeDefs

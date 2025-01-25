@@ -12,6 +12,13 @@
             DependentTypes = new List<Type>();
         }
 
+        public TypeDef(Type type, string typeText)
+        {
+            Type = type;
+            TypeText = typeText;
+            DependentTypes = new List<Type>();
+        }
+
         public TypeDef(Type type, string typeText, List<Type> dependentTypes)
         {
             Type = type;

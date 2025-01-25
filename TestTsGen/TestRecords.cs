@@ -29,7 +29,7 @@ namespace TestTsGen
     internal record TestRecord3(List<int> List, HashSet<int> Set, Dictionary<int, int> Dict, IList<int> IList, IEnumerable<int> IEnumerable, IDictionary<int, int> IDict, IEnumerable IEnumerableNonGen);
 
     [TsGen]
-    internal record TestRecord4(int Id, TestRecord5 Record5);
+    internal record TestRecord4(int Id, TestRecord5 Record5, Enum1 enum1);
 
     [TsGen]
     internal class TestClass1
@@ -40,7 +40,11 @@ namespace TestTsGen
         public KeyValuePair<string, double> Kvp2 { get; set; }
     }
 
-    
+    internal enum Enum1
+    {
+        None,
+        One
+    }
 }
 
 namespace Random.Records 
@@ -55,5 +59,10 @@ namespace Random.Records
     }
 
     [TsGen]
-    internal record TestRecord6(int[] Ints);
+    internal record TestRecord6(int[] Ints, TestRecord9 Record9);
+}
+
+namespace Random
+{
+    internal record TestRecord9(int Int1);
 }
