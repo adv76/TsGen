@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 using TsGen.Attributes;
 using TsGen.Builders.TypeBuilders;
 
-namespace TestTsGen
+namespace TestTsGen.Level2
 {
     [Index(nameof(Id))]
     [TsGen]
@@ -38,6 +38,7 @@ namespace TestTsGen
         public Guid Id2 { get; set; }
         public KeyValuePair<string, int> Kvp1 { get; set; }
         public KeyValuePair<string, double> Kvp2 { get; set; }
+        public KeyValuePair<string, string> Kvp3 { get; set; }
     }
 
     internal enum Enum1

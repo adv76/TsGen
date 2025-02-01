@@ -25,17 +25,34 @@ namespace TsGen.Builders.TypeBuilders
 
             stringBldr.Append("type ");
             stringBldr.Append(type.Name.Sanitize());
+
+            if (type.IsGenericTypeDefinition)
+            {
+                var args = type.GetGenericArguments().Select(t => t.Name);
+
+                stringBldr.Append('<');
+                stringBldr.Append(string.Join(", ", args));
+                stringBldr.Append('>');
+            }
+
             stringBldr.AppendLine(" = {");
 
             var propDefs = OutputProperties(properties, stringBldr);
 
             stringBldr.AppendLine("};");
 
-            var propertyBldr = new DefaultPropertyBuilder();
+            IEnumerable<Type> deptTypes;
 
-            var deptTypes = propDefs
-                .SelectMany(p => p.DependentTypes)
-                .Distinct();
+            if (type.IsGenericTypeDefinition)
+            {
+                deptTypes = new List<Type>();
+            }
+            else
+            {
+                deptTypes = propDefs
+                    .SelectMany(p => p.DependentTypes)
+                    .Distinct();
+            }
 
             return new TypeDef(type, stringBldr.ToString(), deptTypes.ToList());
         }

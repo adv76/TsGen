@@ -4,7 +4,7 @@ using TsGen.Models;
 
 namespace TsGen.TypeResolvers
 {
-    internal class CollectionTypeResolver : ITypeResolver
+    public class CollectionTypeResolver : ITypeResolver
     {
         public ResolvedType? Resolve(Type type, bool optional, ITypeResolver recursiveResolver)
         {

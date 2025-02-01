@@ -7,6 +7,7 @@ namespace TsGen.TypeResolvers
     {
         private readonly BuiltInTypeResolver _builtInResolver = new();
         private readonly CollectionTypeResolver _collectionResolver = new();
+        private readonly GenericTypeResolver _genericResolver = new();
         private readonly DateTimeTypeResolver _dateTimeResolver = new();
         private readonly ObjectTypeResolver _objectResolver = new();
 
@@ -14,6 +15,7 @@ namespace TsGen.TypeResolvers
             => _builtInResolver.Resolve(type, optional, recursiveResolver)
                 ?? _collectionResolver.Resolve(type, optional, recursiveResolver)
                 ?? _dateTimeResolver.Resolve(type, optional, recursiveResolver)
+                ?? _genericResolver.Resolve(type, optional, recursiveResolver)
                 ?? _objectResolver.Resolve(type, optional, recursiveResolver);
             
     }
