@@ -9,11 +9,11 @@ namespace TsGen.Attributes
 
         public bool HasCustomType => _customType is not null;
         public string CustomType => _customType is not null ? _customType : throw new InvalidOperationException();
-        public Nullability Nullability { get; private init; } = Nullability.Default;
+        public Optionality Nullability { get; private init; } = Optionality.Default;
 
         public TsPropGenAttribute() { }
 
-        public TsPropGenAttribute(string? type = null, Nullability nullability = Nullability.Default)
+        public TsPropGenAttribute(string? type = null, Optionality nullability = Optionality.Default)
         {
             _customType = type;
             Nullability = nullability;

@@ -1,6 +1,6 @@
 ﻿namespace TsGen.Enums
 {
-    public enum Nullability
+    public enum Optionality
     {
         Default = 0,
         Optional = 1,
