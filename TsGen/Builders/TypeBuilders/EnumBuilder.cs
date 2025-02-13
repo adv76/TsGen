@@ -5,8 +5,20 @@ using TsGen.Models;
 
 namespace TsGen.Builders.TypeBuilders
 {
+    /// <summary>
+    /// Typescript type builder for enums
+    /// </summary>
+    /// <remarks>
+    /// If the supplied type is a .NET enum, it will output a Typescript enum with the fields and underlying numeric values.
+    /// </remarks>
     public class EnumBuilder : ITypeBuilder
     {
+        /// <summary>
+        /// Builds a TypeDef for an enum
+        /// </summary>
+        /// <param name="type">The type to generate Typescript for</param>
+        /// <param name="export">Whether or not the enum should be exported from the module</param>
+        /// <returns></returns>
         public TypeDef Build(Type type, bool export)
         {
             if (type.IsEnum)

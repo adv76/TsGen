@@ -6,4 +6,4 @@ Annotate your classes with the TsGen attribute, install the CLI (TsGenCli) as a 
 
 Include a class extending TsGenSettings to customize the output path and more.
 
-More info coming soon!
+Docs can be found at [https://adv76.github.io/TsGen/](https://adv76.github.io/TsGen/).
