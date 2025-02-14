@@ -2,7 +2,6 @@
 using System.Text;
 using System.Text.Json.Serialization;
 using TsGen.Attributes;
-using TsGen.Builders.PropertyBuilders;
 using TsGen.Extensions;
 using TsGen.Interfaces;
 using TsGen.Models;

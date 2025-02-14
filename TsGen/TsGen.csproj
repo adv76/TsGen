@@ -7,15 +7,15 @@
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Title>Typescript Type Generator</Title>
     <Company />
-    <Authors>adv68</Authors>
+    <Authors>adv76</Authors>
     <Description>TypeScript Type Generator</Description>
-    <Copyright>2025 adv68</Copyright>
-    <PackageProjectUrl>https://github.com/adv68/TsGen</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/adv68/TsGen</RepositoryUrl>
+    <Copyright>2025 adv76</Copyright>
+    <PackageProjectUrl>https://github.com/adv76/TsGen</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/adv76/TsGen</RepositoryUrl>
     <PackageTags>TS;TypeScript;Type Generator</PackageTags>
     <PackageReleaseNotes>Beta release just for initial testing</PackageReleaseNotes>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Version>1.0.0-alpha.5</Version>
+    <Version>1.0.0-alpha.6</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>

@@ -122,7 +122,7 @@ namespace TsGen
                 .Select(t => ((t.TsGenProps?.HasCustomTypeBuilder ?? false) 
                     ? t.TsGenProps.TypeBuilder 
                     : t.Type.IsEnum
-                        ? new EnumBuilder()
+                        ? generatorSettings.DefaultEnumBuilder
                         : generatorSettings.DefaultTypeBuilder).Build(t.Type, true));
             
 

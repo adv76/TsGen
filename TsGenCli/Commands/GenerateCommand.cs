@@ -53,18 +53,19 @@ namespace TsGenCli.Commands
 
             if (settings.ProjectFile is not null)
             {
-                args = ["build", settings.ProjectFile, "-getTargetResult:Build", "-p:EnableDynamicLoading=true"];
+                args = new List<string>() { "build", settings.ProjectFile, "-getTargetResult:Build", "-p:EnableDynamicLoading=true" };
             }
             else
             {
-                args = ["build", "-getTargetResult:Build", "-p:EnableDynamicLoading=true"];
+                args = new List<string>() { "build", "-getTargetResult:Build", "-p:EnableDynamicLoading=true" };
             }
 
-            var processInfo = new ProcessStartInfo("dotnet", args)
+            var processInfo = new ProcessStartInfo("dotnet")
             {
                 RedirectStandardOutput = true,
                 UseShellExecute = false
             };
+            args.ForEach(processInfo.ArgumentList.Add);
 
             var process = Process.Start(processInfo);
             if (process is not null)

@@ -2,24 +2,24 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackAsTool>True</PackAsTool>
     <ToolCommandName>tsgen</ToolCommandName>
     <Title>Typescript Type Generator CLI</Title>
-    <Authors>adv68</Authors>
+    <Authors>adv76</Authors>
     <PackageReleaseNotes>Beta release just for initial testing</PackageReleaseNotes>
     <PackageTags>TS;TypeScript;Type Generator</PackageTags>
-    <RepositoryUrl>https://github.com/adv68/TsGen</RepositoryUrl>
+    <RepositoryUrl>https://github.com/adv76/TsGen</RepositoryUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageProjectUrl>https://github.com/adv68/TsGen</PackageProjectUrl>
-    <Copyright>2025 adv68</Copyright>
+    <PackageProjectUrl>https://github.com/adv76/TsGen</PackageProjectUrl>
+    <Copyright>2025 adv76</Copyright>
     <Description>Typescript Type Generator .NET Tool</Description>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Version>1.0.0-alpha.4</Version>
+    <Version>1.0.0-alpha.5</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <TargetFrameworks>net9.0;net8.0;net7.0;net6.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -37,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="README.md">
+    <None Include="README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
