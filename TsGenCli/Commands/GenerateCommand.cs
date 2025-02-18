@@ -47,6 +47,8 @@ namespace TsGenCli.Commands
 
     public class GenerateCommand : AsyncCommand<GenerateCommandSettings>
     {
+        private IEnumerable<(string, int[], string)> _runtimes = new List<(string, int[], string)>();
+
         public override async Task<int> ExecuteAsync(CommandContext context, GenerateCommandSettings settings)
         {
             List<string> args;
@@ -94,6 +96,9 @@ namespace TsGenCli.Commands
                     if (buildResult.TargetResults.Build.Result == "Success")
                     {
                         AnsiConsole.MarkupLine("[Green]Build Succeeded![/]");
+
+                        _runtimes = await GetRuntimesAsync();
+                        AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
                         var assemblyPath = buildResult.TargetResults.Build.Items[0].FullPath;
                         var assembly = Assembly.LoadFrom(assemblyPath);
@@ -150,6 +155,61 @@ namespace TsGenCli.Commands
             }
 
             return -1;
+        }
+
+        private Assembly? CurrentDomain_AssemblyResolve(object? sender, ResolveEventArgs args)
+        {
+            var assemblyInfo = args.Name.Split(',', StringSplitOptions.TrimEntries);
+            var name = assemblyInfo[0];
+            var version = assemblyInfo[1].Split('=')[1].Split('.').Select(int.Parse).ToArray();
+            var publicKeyToken = assemblyInfo[3].Split('=')[1];
+
+            foreach (var (type, rtVersion, path) in _runtimes.Where(r => r.Item2[0] == version[0]))
+            {
+                var file = Path.Combine(path, $"{name}.dll");
+                if (File.Exists(file))
+                {
+                    return Assembly.LoadFile(file);
+                }
+            }
+
+            return null;
+        }
+
+        private static async Task<IEnumerable<(string Type, int[] Version, string Path)>> GetRuntimesAsync()
+        {
+            var runtimeList = new List<(string, int[], string)>();
+
+            var processInfo = new ProcessStartInfo("dotnet")
+            {
+                RedirectStandardOutput = true,
+                UseShellExecute = false
+            };
+            processInfo.ArgumentList.Add("--list-runtimes");
+
+            var process = Process.Start(processInfo);
+            if (process is not null)
+            {
+                await process.WaitForExitAsync();
+                if (process.ExitCode == 0)
+                {
+                    var runtimeText = await process.StandardOutput.ReadToEndAsync();
+                    var runtimes = runtimeText.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var runtime in runtimes)
+                    {
+                        var space1 = runtime.IndexOf(' ');
+                        var space2 = runtime.IndexOf(' ', space1 + 1);
+
+                        var type = runtime[0..space1];
+                        var version = runtime[(space1 + 1)..space2].Split('.').Select(int.Parse).ToArray();
+                        var path = Path.Combine(runtime[(space2 + 1)..][1..^1], runtime[(space1 + 1)..space2]);
+
+                        runtimeList.Add((type, version, path));
+                    }
+                }
+            }
+
+            return runtimeList;
         }
     }
 }
