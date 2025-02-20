@@ -18,8 +18,9 @@ namespace TsGen.Builders.TypeBuilders
         /// </summary>
         /// <param name="type">The type to generate Typescript for</param>
         /// <param name="export">Whether or not the enum should be exported from the module</param>
+        /// <param name="settings">The settings to use to build the type.</param>
         /// <returns></returns>
-        public TypeDef Build(Type type, bool export)
+        public TypeDef Build(Type type, bool export, TsGenSettings settings)
         {
             if (type.IsEnum)
             {
@@ -36,7 +37,7 @@ namespace TsGen.Builders.TypeBuilders
                 {
                     if (field.Name == "value__") continue;
 
-                    stringBldr.Append("  ");
+                    stringBldr.Append(settings.Indentation);
                     stringBldr.Append(field.Name.Sanitize());
                     stringBldr.Append(" = ");
                     stringBldr.Append(field.GetRawConstantValue());

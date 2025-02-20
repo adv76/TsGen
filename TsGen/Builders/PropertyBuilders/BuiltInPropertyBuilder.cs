@@ -22,10 +22,10 @@ namespace TsGen.Builders.PropertyBuilders
             { typeof(ulong), "number" },
             { typeof(short), "number" },
             { typeof(ushort), "number" },
-            { typeof(string), "string" }
+            { typeof(string), "string" },
+            { typeof(Guid), "string" },
+            { typeof(object), "any" }
         };
-
-        public bool HandlesType(Type type) => _defaults.ContainsKey(type);
 
         public PropertyDef? Build(string name, Type type, bool optional)
         {

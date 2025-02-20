@@ -6,8 +6,6 @@ namespace TsGen.Builders.PropertyBuilders
 {
     public class CollectionPropertyBuilder : IPropertyBuilder
     {
-        public bool HandlesType(Type type) => false; // TODO this needs fixing for nested collections
-
         public PropertyDef? Build(string name, Type type, bool optional)
         {
             var interfaces = type.GetInterfaces();

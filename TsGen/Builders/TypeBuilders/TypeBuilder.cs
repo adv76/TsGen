@@ -11,7 +11,7 @@ namespace TsGen.Builders.TypeBuilders
 {
     public class TypeBuilder : ITypeBuilder
     {
-        public TypeDef Build(Type type, bool export)
+        public TypeDef Build(Type type, bool export, TsGenSettings settings)
         {
             var properties = type.GetProperties()
                 .Union(type.GetPropertiesWithAttribute<TsPropGenAttribute>())

@@ -12,7 +12,7 @@ namespace TsGen
         private const int MaxRecursionIterations = 5;
 
         public static IEnumerable<TypeDef> GenerateTypeDefs(Assembly assembly, TsGenSettings generatorSettings)
-            => GenerateTypeDefsInternal(assembly.GetTypes().Where(t => Attribute.IsDefined(t, typeof(TsGenAttribute))), generatorSettings);
+            => GenerateTypeDefs(assembly.GetTypes().Where(t => Attribute.IsDefined(t, typeof(TsGenAttribute))), generatorSettings);
 
         public static IEnumerable<TypeDef> GenerateTypeDefs(IEnumerable<Type> types, TsGenSettings generatorSettings)
             => GenerateTypeDefsInternal(types, generatorSettings);
@@ -123,7 +123,7 @@ namespace TsGen
                     ? t.TsGenProps.TypeBuilder 
                     : t.Type.IsEnum
                         ? generatorSettings.DefaultEnumBuilder
-                        : generatorSettings.DefaultTypeBuilder).Build(t.Type, true));
+                        : generatorSettings.DefaultTypeBuilder).Build(t.Type, true, generatorSettings));
             
 
             var dependentTypes = typeDefs

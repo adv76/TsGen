@@ -10,11 +10,6 @@ namespace TsGen.Builders.PropertyBuilders
         private readonly CollectionPropertyBuilder _collectionPropertyBuilder = new();
         private readonly ObjectPropertyBuilder _objectPropertyBuilder = new();
 
-        public bool HandlesType(Type type)
-            => _builtInPropertyBuilder.HandlesType(type)
-                || _collectionPropertyBuilder.HandlesType(type)
-                || _objectPropertyBuilder.HandlesType(type);
-
         public PropertyDef? Build(string name, Type type, bool optional)
         {
             return _builtInPropertyBuilder.Build(name, type, optional)

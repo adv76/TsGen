@@ -1,4 +1,5 @@
 ﻿using TsGen.Builders.TypeBuilders;
+using TsGen.Enums;
 using TsGen.Interfaces;
 using TsGen.NamingPolicies;
 
@@ -32,6 +33,16 @@ namespace TsGen
         /// The default type builder. It defaults to <see cref="TypeBuilder">Type Builder</see>.
         /// </summary>
         public virtual ITypeBuilder DefaultTypeBuilder { get; set; } = new TypeBuilder();
+
+        /// <summary>
+        /// The default optionality setting for properties. It defaults to <see cref="Optionality.Default"/>
+        /// </summary>
+        public virtual Optionality DefaultPropertyOptionality { get; set; } = Optionality.Default;
+
+        /// <summary>
+        /// The default optionality setting for nullable properties. It defaults to <see cref="Optionality.Optional"/>
+        /// </summary>
+        public virtual Optionality DefaultNullablePropertyOptionality { get; set; } = Optionality.Optional;
 
         /// <summary>
         /// The default output directory. It defaults to a directory called "TsGen" in the users Documents folder (<see cref="Environment.SpecialFolder.Personal"/>).

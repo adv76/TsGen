@@ -5,7 +5,7 @@ namespace TsGen.Builders.TypeBuilders
 {
     public class InterfaceBuilder : ITypeBuilder
     {
-        public TypeDef Build(Type type, bool export)
+        public TypeDef Build(Type type, bool export, TsGenSettings settings)
         {
             return new TypeDef(type);
         }
