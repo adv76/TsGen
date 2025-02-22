@@ -2,6 +2,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 using TsGen.Attributes;
+using TsGen.Enums;
 using TsGen.Extensions;
 using TsGen.Interfaces;
 using TsGen.Models;
@@ -11,7 +12,7 @@ namespace TsGen.Builders.TypeBuilders
 {
     public class TypeBuilder : ITypeBuilder
     {
-        public TypeDef Build(Type type, bool export, TsGenSettings settings)
+        public TypeDef Build(Type type, bool export, TsGenSettings generatorSettings)
         {
             var properties = type.GetProperties()
                 .Union(type.GetPropertiesWithAttribute<TsPropGenAttribute>())
@@ -23,7 +24,7 @@ namespace TsGen.Builders.TypeBuilders
             if (export) stringBldr.Append("export ");
 
             stringBldr.Append("type ");
-            stringBldr.Append(type.Name.Sanitize());
+            stringBldr.Append(generatorSettings.TypeNamingPolicy.ConvertName(type.Name.Sanitize()));
 
             if (type.IsGenericTypeDefinition)
             {
@@ -36,7 +37,7 @@ namespace TsGen.Builders.TypeBuilders
 
             stringBldr.AppendLine(" = {");
 
-            var propDefs = OutputProperties(properties, stringBldr);
+            var propDefs = OutputProperties(properties, stringBldr, generatorSettings);
 
             stringBldr.AppendLine("};");
 
@@ -56,7 +57,7 @@ namespace TsGen.Builders.TypeBuilders
             return new TypeDef(type, stringBldr.ToString(), deptTypes.ToList());
         }
 
-        private static List<PropertyDef> OutputProperties(IEnumerable<PropertyInfo> properties, StringBuilder stringBldr)
+        private static List<PropertyDef> OutputProperties(IEnumerable<PropertyInfo> properties, StringBuilder stringBldr, TsGenSettings generatorSettings)
         {
             var propDefs = new List<PropertyDef>();
 
@@ -64,38 +65,14 @@ namespace TsGen.Builders.TypeBuilders
 
             foreach (var property in properties)
             {
-                string propName;
-
-                var jsonPropNameAttr = property.GetCustomAttribute<JsonPropertyNameAttribute>();
-                if (jsonPropNameAttr is not null)
-                {
-                    propName = jsonPropNameAttr.Name;
-                }
-                else
-                {
-                    propName = new TsGenSettings().PropertyNamingPolicy.ConvertName(property.Name);
-                }
-
-                var nullable = property.IsNullable(out var propType);
-
-                PropertyDef propertyDef;
-
-                var tsPropGenAttr = property.GetCustomAttribute<TsPropGenAttribute>();
-                if (tsPropGenAttr is not null && tsPropGenAttr.HasCustomType)
-                {
-                    propertyDef = new PropertyDef(propName, new ResolvedType(nullable, tsPropGenAttr.CustomType));
-                }
-                else
-                {
-                    propertyDef = new PropertyDef(propName, resolver.Resolve(propType, nullable, resolver) ?? new ResolvedType(nullable, "unknown"));
-                }
+                var propertyDef = PropertyDef.Build(property, resolver, generatorSettings);
                 
                 propDefs.Add(propertyDef);
 
-                stringBldr.Append("  ");
+                stringBldr.Append(generatorSettings.Indentation);
                 stringBldr.Append(propertyDef.Name);
 
-                if (propertyDef.Optional)
+                if (propertyDef.Optionality == Optionality.Optional)
                 {
                     stringBldr.Append('?');
                 }

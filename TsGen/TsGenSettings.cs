@@ -35,9 +35,9 @@ namespace TsGen
         public virtual ITypeBuilder DefaultTypeBuilder { get; set; } = new TypeBuilder();
 
         /// <summary>
-        /// The default optionality setting for properties. It defaults to <see cref="Optionality.Default"/>
+        /// The default optionality setting for properties. It defaults to <see cref="Optionality.Required"/>
         /// </summary>
-        public virtual Optionality DefaultPropertyOptionality { get; set; } = Optionality.Default;
+        public virtual Optionality DefaultPropertyOptionality { get; set; } = Optionality.Required;
 
         /// <summary>
         /// The default optionality setting for nullable properties. It defaults to <see cref="Optionality.Optional"/>

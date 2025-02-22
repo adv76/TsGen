@@ -14,6 +14,6 @@ namespace TsGen.Interfaces
         /// <param name="export">Whether or not to export the type.</param>
         /// <param name="settings">The settings to use to build the type.</param>
         /// <returns></returns>
-        public TypeDef Build(Type type, bool export, TsGenSettings settings);
+        public TypeDef Build(Type type, bool export, TsGenSettings generatorSettings);
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System.Collections;
+using TsGen.Enums;
 using TsGen.Interfaces;
 using TsGen.Models;
 
 namespace TsGen.TypeResolvers
 {
-    public class CollectionTypeResolver : ITypeResolver
+    public class CollectionTypeResolver : IPropertyTypeResolver
     {
         /// <summary>
         /// Attempts to resovlve a Typescript type from the passed in type
@@ -13,7 +14,7 @@ namespace TsGen.TypeResolvers
         /// <param name="optional">Whether or not the resolved type should be optional.</param>
         /// <param name="recursiveResolver">The recursive resolver for resolving nested types.</param>
         /// <returns>A resolved type if the type can be handled by this resolver (see list in class description) otherwise null.</returns>
-        public ResolvedType? Resolve(Type type, bool optional, ITypeResolver recursiveResolver)
+        public PropertyType? Resolve(Type type, Optionality optionality, IPropertyTypeResolver recursiveResolver)
         {
             var interfaces = type.GetInterfaces();
 
@@ -27,19 +28,19 @@ namespace TsGen.TypeResolvers
 
                 var deptTypes = new List<Type>();
 
-                var genericType0 = recursiveResolver.Resolve(genericParamTypes[0], false, recursiveResolver);
+                var genericType0 = recursiveResolver.Resolve(genericParamTypes[0], Optionality.Required, recursiveResolver);
                 if (genericType0 is not null)
                 {
                     deptTypes.AddRange(genericType0.DependentTypes);
                 }
 
-                var genericType1 = recursiveResolver.Resolve(genericParamTypes[1], false, recursiveResolver);
+                var genericType1 = recursiveResolver.Resolve(genericParamTypes[1], Optionality.Required, recursiveResolver);
                 if (genericType1 is not null)
                 {
                     deptTypes.AddRange(genericType1.DependentTypes);
                 }
 
-                return new ResolvedType(optional, $"Record<{genericType0?.TypeName ?? "any"}, {genericType1?.TypeName ?? "any"}>", deptTypes);
+                return new PropertyType(optionality, $"Record<{genericType0?.TypeName ?? "any"}, {genericType1?.TypeName ?? "any"}>", deptTypes);
             }
 
             var dictionary = type == typeof(IDictionary)
@@ -48,7 +49,7 @@ namespace TsGen.TypeResolvers
 
             if (dictionary is not null)
             {
-                return new ResolvedType(optional, "Record<any, any>");
+                return new PropertyType(optionality, "Record<any, any>");
             }
 
             var genericEnumerable = type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>)
@@ -61,13 +62,13 @@ namespace TsGen.TypeResolvers
 
                 var deptTypes = new List<Type>();
 
-                var genericType0 = recursiveResolver.Resolve(genericParamTypes[0], false, recursiveResolver);
+                var genericType0 = recursiveResolver.Resolve(genericParamTypes[0], Optionality.Required, recursiveResolver);
                 if (genericType0 is not null)
                 {
                     deptTypes.AddRange(genericType0.DependentTypes);
                 }
 
-                return new ResolvedType(optional, $"{genericType0?.TypeName ?? "any"}[]", deptTypes);
+                return new PropertyType(optionality, $"{genericType0?.TypeName ?? "any"}[]", deptTypes);
             }
 
             var enumerable = type == typeof(IEnumerable)
@@ -76,7 +77,7 @@ namespace TsGen.TypeResolvers
 
             if (enumerable is not null)
             {
-                return new ResolvedType(optional, "any[]");
+                return new PropertyType(optionality, "any[]");
             }
 
             return null;

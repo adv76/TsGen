@@ -19,7 +19,7 @@ namespace TsGen.Builders.TypeBuilders
         /// <param name="type">The type to generate Typescript for</param>
         /// <param name="export">Whether or not the enum should be exported from the module</param>
         /// <param name="settings">The settings to use to build the type.</param>
-        /// <returns></returns>
+        /// <returns>A TypeScript enum if the type is an enum otherwise an empty type def.</returns>
         public TypeDef Build(Type type, bool export, TsGenSettings settings)
         {
             if (type.IsEnum)

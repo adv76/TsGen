@@ -1,4 +1,5 @@
-﻿using TsGen.Interfaces;
+﻿using TsGen.Enums;
+using TsGen.Interfaces;
 using TsGen.Models;
 
 namespace TsGen.TypeResolvers
@@ -28,7 +29,7 @@ namespace TsGen.TypeResolvers
     /// </item>
     /// </list>
     /// </remarks>
-    public class DefaultTypeResolver : ITypeResolver
+    public class DefaultTypeResolver : IPropertyTypeResolver
     {
         private readonly BuiltInTypeResolver _builtInResolver = new();
         private readonly CollectionTypeResolver _collectionResolver = new();
@@ -43,12 +44,12 @@ namespace TsGen.TypeResolvers
         /// <param name="optional">Whether or not the resolved type should be optional.</param>
         /// <param name="recursiveResolver">The recursive resolver for resolving nested types.</param>
         /// <returns>A resolved type if the type can be handled by this resolver (see list in class description) otherwise null.</returns>
-        public ResolvedType? Resolve(Type type, bool optional, ITypeResolver recursiveResolver)
-            => _builtInResolver.Resolve(type, optional, recursiveResolver)
-                ?? _collectionResolver.Resolve(type, optional, recursiveResolver)
-                ?? _dateTimeResolver.Resolve(type, optional, recursiveResolver)
-                ?? _genericResolver.Resolve(type, optional, recursiveResolver)
-                ?? _objectResolver.Resolve(type, optional, recursiveResolver);
+        public PropertyType? Resolve(Type type, Optionality optionality, IPropertyTypeResolver recursiveResolver)
+            => _builtInResolver.Resolve(type, optionality, recursiveResolver)
+                ?? _collectionResolver.Resolve(type, optionality, recursiveResolver)
+                ?? _dateTimeResolver.Resolve(type, optionality, recursiveResolver)
+                ?? _genericResolver.Resolve(type, optionality, recursiveResolver)
+                ?? _objectResolver.Resolve(type, optionality, recursiveResolver);
             
     }
 }

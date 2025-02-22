@@ -6,18 +6,23 @@
     public enum Optionality
     {
         /// <summary>
-        /// The default optionality (not optional).
+        /// The default optionality (derived from config).
         /// </summary>
         Default = 0,
 
         /// <summary>
+        /// Not optional
+        /// </summary>
+        Required = 1,
+
+        /// <summary>
         /// Optional (uses Typescript ? for optionality).
         /// </summary>
-        Optional = 1,
+        Optional = 2,
 
         /// <summary>
         /// Type or undefined (not optional but can be undefined).
         /// </summary>
-        TypeOrUndefined = 2
+        TypeOrUndefined = 3
     }
 }

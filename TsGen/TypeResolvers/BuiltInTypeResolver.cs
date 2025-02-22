@@ -1,4 +1,5 @@
-﻿using TsGen.Interfaces;
+﻿using TsGen.Enums;
+using TsGen.Interfaces;
 using TsGen.Models;
 
 namespace TsGen.TypeResolvers
@@ -26,7 +27,7 @@ namespace TsGen.TypeResolvers
     /// </item>
     /// </list>
     /// </remarks>
-    public class BuiltInTypeResolver : ITypeResolver
+    public class BuiltInTypeResolver : IPropertyTypeResolver
     {
         private static readonly Dictionary<Type, string> _defaults = new()
         {
@@ -57,11 +58,11 @@ namespace TsGen.TypeResolvers
         /// <param name="optional">Whether or not the resolved type should be optional.</param>
         /// <param name="recursiveResolver">The recursive resolver for resolving nested types.</param>
         /// <returns>A resolved type if the type can be handled by this resolver (see list in class description) otherwise null.</returns>
-        public ResolvedType? Resolve(Type type, bool optional, ITypeResolver recursiveResolver)
+        public PropertyType? Resolve(Type type, Optionality optionality, IPropertyTypeResolver recursiveResolver)
         {
             if (_defaults.TryGetValue(type, out var value))
             {
-                return new ResolvedType(optional, value);
+                return new PropertyType(optionality, value);
             }
 
             return null;

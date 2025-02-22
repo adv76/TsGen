@@ -51,8 +51,17 @@ namespace TsGen.Attributes
         /// Alternate constructor that allows customizing the property definition.
         /// </summary>
         /// <param name="type">The custom type to use (or null for unspecified).</param>
+        public TsPropGenAttribute(string type)
+        {
+            _customType = type;
+        }
+
+        /// <summary>
+        /// Alternate constructor that allows customizing the property definition.
+        /// </summary>
+        /// <param name="type">The custom type to use (or null for unspecified).</param>
         /// <param name="optionality">The custom optionality to use (or null for unspecified).</param>
-        public TsPropGenAttribute(string? type = null, Optionality? optionality = null)
+        public TsPropGenAttribute(string type, Optionality optionality)
         {
             _customType = type;
             _optionality = optionality;
