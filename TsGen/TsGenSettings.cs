@@ -53,5 +53,10 @@ namespace TsGen
         /// The character(s) to use for an indentation. It defaults to 4 spaces.
         /// </summary>
         public virtual string Indentation { get; set; } = new string(' ', 4);
+
+        /// <summary>
+        /// The export structure (file structure of how the types are output). It defaults to <see cref="ExportStructure.DirectoryBased"/>
+        /// </summary>
+        public virtual ExportStructure ExportStructure { get; set; } = ExportStructure.DirectoryBased;
     }
 }
