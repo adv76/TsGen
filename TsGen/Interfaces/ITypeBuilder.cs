@@ -12,7 +12,7 @@ namespace TsGen.Interfaces
         /// </summary>
         /// <param name="type">The type to build a type def for.</param>
         /// <param name="export">Whether or not to export the type.</param>
-        /// <param name="settings">The settings to use to build the type.</param>
+        /// <param name="generatorSettings">The settings to use to build the type.</param>
         /// <returns></returns>
         public TypeDef Build(Type type, bool export, TsGenSettings generatorSettings);
     }

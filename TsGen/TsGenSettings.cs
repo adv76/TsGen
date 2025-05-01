@@ -50,6 +50,11 @@ namespace TsGen
         public virtual string OutputDirectory { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "TsGen");
 
         /// <summary>
+        /// Whether or not to clear the output directory before outputting the type files. Defaults to true.
+        /// </summary>
+        public virtual bool ClearTargetDirectory { get; set; } = true;
+
+        /// <summary>
         /// The character(s) to use for an indentation. It defaults to 4 spaces.
         /// </summary>
         public virtual string Indentation { get; set; } = new string(' ', 4);

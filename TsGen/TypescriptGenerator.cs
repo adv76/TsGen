@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text;
 using TsGen.Attributes;
 using TsGen.Builders.TypeBuilders;
+using TsGen.Enums;
 using TsGen.Extensions;
 using TsGen.Interfaces;
 using TsGen.Models;
@@ -37,12 +38,14 @@ namespace TsGen
             foreach (var typeGroup in typeDefs.GroupBy(t => t.Type.Namespace))
             {
                 var ns = typeGroup.Key ?? string.Empty;
-                var nsPath = ns.Replace('.', '/');
+                var nsPath = generatorSettings.ExportStructure == ExportStructure.DirectoryBased
+                    ? Path.Combine(ns.Replace('.', '/'), "index.ts")
+                    : ns + ".ts";
 
                 var typeFile = new TypeFile()
                 {
                     Namespace = ns,
-                    RelativePath = nsPath
+                    RelativeFilePath = nsPath
                 };
 
                 var deps = typeGroup.SelectMany(t => t.DependentTypes).Where(n => n.Namespace != typeGroup.Key).GroupBy(t => t.Namespace);
@@ -52,7 +55,7 @@ namespace TsGen
                     //var depPath = depNs.Replace('.', '/');
 
                     //typeFile.Imports.Add($"import {{ { string.Join(", ", dep.Select(dep => dep.Name.Sanitize()).Distinct()) } }} from {Path.GetRelativePath(nsPath, depPath).Replace('\\', '/')};");
-                    typeFile.Imports.Add(GetImports(ns, depNs, dep));
+                    typeFile.Imports.Add(GetImports(ns, depNs, dep, generatorSettings));
                 }
 
                 foreach (var type in typeGroup)
@@ -65,7 +68,7 @@ namespace TsGen
             return typeFiles;
         }
 
-        private static string GetImports(string currentNamespace, string importNamespace, IEnumerable<Type> types)
+        private static string GetImports(string currentNamespace, string importNamespace, IEnumerable<Type> types, TsGenSettings generatorSettings)
         {
             var currentPath = currentNamespace.Replace('.', '/');
             var importPath = importNamespace.Replace('.', '/');
@@ -97,7 +100,16 @@ namespace TsGen
             }
 
             bldr.Append(" from \"");
-            bldr.Append(Path.GetRelativePath(currentPath, importPath).Replace('\\', '/'));
+            if (generatorSettings.ExportStructure == ExportStructure.DirectoryBased)
+            {
+                bldr.Append(Path.GetRelativePath(currentPath, importPath).Replace('\\', '/'));
+            }
+            else
+            {
+                bldr.Append("./");
+                bldr.Append(importNamespace);
+                bldr.Append(".ts");
+            }
             bldr.Append("\";");
 
             return bldr.ToString();

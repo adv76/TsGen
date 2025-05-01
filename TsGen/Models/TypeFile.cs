@@ -5,7 +5,7 @@ namespace TsGen.Models
     public class TypeFile
     {
         public string Namespace { get; set; } = string.Empty;
-        public string RelativePath { get; set; } = string.Empty;
+        public string RelativeFilePath { get; set; } = string.Empty;
 
         public List<string> Imports { get; set; } = new List<string>();
         public Dictionary<Type, string> TypeMap { get; set; } = new Dictionary<Type, string>();
@@ -43,7 +43,7 @@ namespace TsGen.Models
 
             fileContents = strBldr.ToString();
 
-            return ReplacePathSeparators(Path.Combine(basePath, RelativePath, "index.ts"));
+            return ReplacePathSeparators(Path.Combine(basePath, RelativeFilePath));
         }
 
         private static string ReplacePathSeparators(string path) 

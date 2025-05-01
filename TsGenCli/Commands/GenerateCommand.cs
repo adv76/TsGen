@@ -139,6 +139,21 @@ namespace TsGenCli.Commands
                             generatorSettings.OutputDirectory = settings.OutputDirectory;
                         }
 
+                        if (generatorSettings.ClearTargetDirectory)
+                        {
+                            var directory = new DirectoryInfo(generatorSettings.OutputDirectory);
+
+                            foreach (var file in directory.EnumerateFiles())
+                            {
+                                file.Delete();
+                            }
+
+                            foreach (var dir in directory.EnumerateDirectories())
+                            {
+                                dir.Delete(true);
+                            }
+                        }
+
                         var tsFiles = assembly.GenerateTypeFiles(generatorSettings);
 
                         await assembly.GenerateAndOutputTypeFilesAsync(generatorSettings);
