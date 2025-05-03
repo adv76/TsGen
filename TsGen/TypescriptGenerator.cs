@@ -37,7 +37,7 @@ namespace TsGen
             var typeFiles = new List<TypeFile>();
             foreach (var typeGroup in typeDefs.GroupBy(t => t.Type.Namespace))
             {
-                var ns = typeGroup.Key ?? string.Empty;
+                var ns = typeGroup.Key ?? "Other";
                 var nsPath = generatorSettings.ExportStructure == ExportStructure.DirectoryBased
                     ? Path.Combine(ns.Replace('.', '/'), "index.ts")
                     : ns + ".ts";
@@ -51,11 +51,9 @@ namespace TsGen
                 var deps = typeGroup.SelectMany(t => t.DependentTypes).Where(n => n.Namespace != typeGroup.Key).GroupBy(t => t.Namespace);
                 foreach (var dep in deps)
                 {
-                    var depNs = dep.Key ?? string.Empty;
-                    //var depPath = depNs.Replace('.', '/');
+                    var depNs = dep.Key ?? "Other";
 
-                    //typeFile.Imports.Add($"import {{ { string.Join(", ", dep.Select(dep => dep.Name.Sanitize()).Distinct()) } }} from {Path.GetRelativePath(nsPath, depPath).Replace('\\', '/')};");
-                    typeFile.Imports.Add(GetImports(ns, depNs, dep, generatorSettings));
+                    typeFile.Imports.Add(BuildImport(ns, depNs, dep, generatorSettings));
                 }
 
                 foreach (var type in typeGroup)
@@ -68,7 +66,7 @@ namespace TsGen
             return typeFiles;
         }
 
-        private static string GetImports(string currentNamespace, string importNamespace, IEnumerable<Type> types, TsGenSettings generatorSettings)
+        private static string BuildImport(string currentNamespace, string importNamespace, IEnumerable<Type> types, TsGenSettings generatorSettings)
         {
             var currentPath = currentNamespace.Replace('.', '/');
             var importPath = importNamespace.Replace('.', '/');

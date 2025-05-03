@@ -2,14 +2,37 @@
 
 namespace TsGen.Models
 {
+    /// <summary>
+    /// Represents a complete TypeScript file that is ready to be output.
+    /// </summary>
     public class TypeFile
     {
+        /// <summary>
+        /// The namespace that all of the types are in (types are organized one namespace per file)
+        /// </summary>
         public string Namespace { get; set; } = string.Empty;
+
+        /// <summary>
+        /// The relative path to this type file (relative to the base directory)
+        /// </summary>
         public string RelativeFilePath { get; set; } = string.Empty;
 
-        public List<string> Imports { get; set; } = new List<string>();
-        public Dictionary<Type, string> TypeMap { get; set; } = new Dictionary<Type, string>();
+        /// <summary>
+        /// All of the imports to this file. Imports must be complete e.g. "import { item } from './my-module';"
+        /// </summary>
+        public List<string> Imports { get; set; } = new();
 
+        /// <summary>
+        /// Dictionary of the types in this namespace/file and the generated output text for the type
+        /// </summary>
+        public Dictionary<Type, string> TypeMap { get; set; } = new();
+
+        /// <summary>
+        /// Builds a the text of a type file from the class properties
+        /// </summary>
+        /// <param name="basePath">The base output directory to output all types to</param>
+        /// <param name="fileContents">(Out) the contents of the type file</param>
+        /// <returns>The complete file path of where to save the type file</returns>
         public string ToFile(string basePath, out string fileContents)
         {
             var strBldr = new StringBuilder();
