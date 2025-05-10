@@ -1,4 +1,5 @@
-﻿using TsGen;
+﻿using Random;
+using TsGen;
 using TsGen.Enums;
 
 namespace TestTsGen
@@ -7,5 +8,6 @@ namespace TestTsGen
     {
         public override string OutputDirectory { get; set; } = @"C:\Users\adv\Documents\types";
         public override ExportStructure ExportStructure { get; set; } = ExportStructure.FileBased;
+        public override Type[] AdditionalTypes { get; } = { typeof(NotAttributedOrReferencedRecord) };
     }
 }

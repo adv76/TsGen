@@ -66,4 +66,6 @@ namespace Random.Records
 namespace Random
 {
     internal record TestRecord9(int Int1);
+
+    internal record NotAttributedOrReferencedRecord(Guid Id, int Int);
 }

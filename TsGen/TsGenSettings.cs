@@ -63,5 +63,13 @@ namespace TsGen
         /// The export structure (file structure of how the types are output). It defaults to <see cref="ExportStructure.DirectoryBased"/>
         /// </summary>
         public virtual ExportStructure ExportStructure { get; set; } = ExportStructure.DirectoryBased;
+
+        /// <summary>
+        /// Additional types that you want to manually include in the type files
+        /// </summary>
+        /// <remarks>
+        /// This is useful if you want to include a type from a library that you don't have control over.
+        /// </remarks>
+        public virtual Type[] AdditionalTypes { get; } = Array.Empty<Type>();
     }
 }

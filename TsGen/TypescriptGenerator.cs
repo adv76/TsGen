@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using TsGen.Attributes;
@@ -15,10 +16,15 @@ namespace TsGen
         private const int MaxRecursionIterations = 5;
 
         public static IEnumerable<TypeDef> GenerateTypeDefs(Assembly assembly, TsGenSettings generatorSettings)
-            => GenerateTypeDefs(assembly.GetTypes().Where(t => Attribute.IsDefined(t, typeof(TsGenAttribute))), generatorSettings);
+            => GenerateTypeDefs(
+                assembly
+                    .GetTypes()
+                    .Where(t => Attribute.IsDefined(t, typeof(TsGenAttribute)))
+                    .Union(generatorSettings.AdditionalTypes), 
+                generatorSettings);
 
         public static IEnumerable<TypeDef> GenerateTypeDefs(IEnumerable<Type> types, TsGenSettings generatorSettings)
-            => GenerateTypeDefsInternal(types, generatorSettings);
+            => GenerateTypeDefsInternal(types.Union(generatorSettings.AdditionalTypes), generatorSettings);
 
         public static IEnumerable<TypeFile> GenerateTypeFiles(Assembly assembly, TsGenSettings generatorSettings)
         {
@@ -106,7 +112,7 @@ namespace TsGen
             {
                 bldr.Append("./");
                 bldr.Append(importNamespace);
-                bldr.Append(".ts");
+                Debug.WriteLine(importNamespace);
             }
             bldr.Append("\";");
 
