@@ -27,7 +27,7 @@ namespace TsGen.Attributes
         /// <exception cref="InvalidOperationException">
         /// Throws if a custom type was not specified. Use <see cref="HasCustomType" /> to check.
         /// </exception>
-        public string CustomType => _customType is not null ? _customType : throw new InvalidOperationException();
+        public string CustomType => _customType ?? throw new InvalidOperationException();
 
         /// <summary>
         /// Whether or not a custom optionality was specified.
@@ -40,7 +40,7 @@ namespace TsGen.Attributes
         /// <exception cref="InvalidOperationException">
         /// Throws if a custom optionality was not specified. Use <see cref="HasCustomOptionality" /> to check.
         /// </exception>
-        public Optionality Nullability => _optionality.HasValue ? _optionality.Value : throw new InvalidOperationException();
+        public Optionality Nullability => _optionality ?? throw new InvalidOperationException();
 
         /// <summary>
         /// The default constructor for the attribute

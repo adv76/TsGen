@@ -12,7 +12,7 @@ namespace TsGen.Builders.TypeBuilders
 {
     public class InterfaceBuilder : ITypeBuilder
     {
-        public TypeDef Build(Type type, bool export, TsGenSettings generatorSettings)
+        public TypeDefinition Build(Type type, bool export, TsGenSettings generatorSettings)
         {
             var properties = type.GetProperties()
                 .Union(type.GetPropertiesWithAttribute<TsPropGenAttribute>())
@@ -54,7 +54,7 @@ namespace TsGen.Builders.TypeBuilders
                     .Distinct();
             }
 
-            return new TypeDef(type, stringBldr.ToString(), deptTypes.ToList());
+            return new TypeDefinition(type, stringBldr.ToString(), deptTypes.ToList());
         }
 
         private static List<PropertyDef> OutputProperties(IEnumerable<PropertyInfo> properties, StringBuilder stringBldr, TsGenSettings generatorSettings)

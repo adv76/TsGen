@@ -5,7 +5,7 @@ namespace TsGen.Extensions
 {
     public static class AssemblyExtensions
     {
-        public static IEnumerable<TypeDef> GenerateTypeDefs(this Assembly assembly, TsGenSettings generatorSettings)
+        public static IEnumerable<TypeDefinition> GenerateTypeDefs(this Assembly assembly, TsGenSettings generatorSettings)
             => TypescriptGenerator.GenerateTypeDefs(assembly, generatorSettings);
 
         public static IEnumerable<TypeFile> GenerateTypeFiles(this Assembly assembly, TsGenSettings generatorSettings)

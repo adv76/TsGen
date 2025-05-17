@@ -5,6 +5,15 @@ using TsGen.Models;
 
 namespace TsGen.TypeResolvers
 {
+    /// <summary>
+    /// Type resolver for all collection types.
+    /// </summary>
+    /// <remarks>
+    /// This type resolver handles all collection types. <see cref="IDictionary{TKey, TValue}"/> types are mapped to 
+    /// Record&lt;TKey, TValue&gt; while <see cref="IDictionary"/> types are mapped to Record&lt;any, any&gt. The same 
+    /// goes for all other collections: collections that implement <see cref="IEnumerable{T}"/> are mapped to T[] while 
+    /// non generic <see cref="IEnumerable"/> are mapped to any[].
+    /// </remarks>
     public class CollectionTypeResolver : IPropertyTypeResolver
     {
         /// <summary>

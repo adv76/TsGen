@@ -20,7 +20,7 @@ namespace TsGen.Builders.TypeBuilders
         /// <param name="export">Whether or not the enum should be exported from the module</param>
         /// <param name="settings">The settings to use to build the type.</param>
         /// <returns>A TypeScript enum if the type is an enum otherwise an empty type def.</returns>
-        public TypeDef Build(Type type, bool export, TsGenSettings settings)
+        public TypeDefinition Build(Type type, bool export, TsGenSettings settings)
         {
             if (type.IsEnum)
             {
@@ -46,11 +46,11 @@ namespace TsGen.Builders.TypeBuilders
 
                 stringBldr.AppendLine("};");
 
-                return new TypeDef(type, stringBldr.ToString());
+                return new TypeDefinition(type, stringBldr.ToString());
             }
             else
             {
-                return new TypeDef(type);
+                return new TypeDefinition(type);
             }
         }
     }

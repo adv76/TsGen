@@ -15,7 +15,7 @@ namespace TsGen
     {
         private const int MaxRecursionIterations = 5;
 
-        public static IEnumerable<TypeDef> GenerateTypeDefs(Assembly assembly, TsGenSettings generatorSettings)
+        public static IEnumerable<TypeDefinition> GenerateTypeDefs(Assembly assembly, TsGenSettings generatorSettings)
             => GenerateTypeDefs(
                 assembly
                     .GetTypes()
@@ -23,7 +23,7 @@ namespace TsGen
                     .Union(generatorSettings.AdditionalTypes), 
                 generatorSettings);
 
-        public static IEnumerable<TypeDef> GenerateTypeDefs(IEnumerable<Type> types, TsGenSettings generatorSettings)
+        public static IEnumerable<TypeDefinition> GenerateTypeDefs(IEnumerable<Type> types, TsGenSettings generatorSettings)
             => GenerateTypeDefsInternal(types.Union(generatorSettings.AdditionalTypes), generatorSettings);
 
         public static IEnumerable<TypeFile> GenerateTypeFiles(Assembly assembly, TsGenSettings generatorSettings)
@@ -38,7 +38,7 @@ namespace TsGen
             return BuildTypeFiles(typeDefs, generatorSettings);
         }
 
-        private static List<TypeFile> BuildTypeFiles(IEnumerable<TypeDef> typeDefs, TsGenSettings generatorSettings)
+        private static List<TypeFile> BuildTypeFiles(IEnumerable<TypeDefinition> typeDefs, TsGenSettings generatorSettings)
         {
             var typeFiles = new List<TypeFile>();
             foreach (var typeGroup in typeDefs.GroupBy(t => t.Type.Namespace))
@@ -145,15 +145,17 @@ namespace TsGen
             }
         }
 
-        private static IEnumerable<TypeDef> GenerateTypeDefsInternal(IEnumerable<Type> types, TsGenSettings generatorSettings, int level = 0)
+        private static IEnumerable<TypeDefinition> GenerateTypeDefsInternal(IEnumerable<Type> types, TsGenSettings generatorSettings, int level = 0)
         {
-            var typeDefs = types
-                .Select(t => new { Type = t, TsGenProps = t.GetCustomAttribute<TsGenAttribute>() })
-                .Select(t => ((t.TsGenProps?.HasCustomTypeBuilder ?? false) 
-                    ? t.TsGenProps.TypeBuilder 
-                    : t.Type.IsEnum
-                        ? generatorSettings.DefaultEnumBuilder
-                        : generatorSettings.DefaultTypeBuilder).Build(t.Type, true, generatorSettings));
+            var typeDefs = types.Select(t => t.GetTypeBuilder(generatorSettings).Build(t, true, generatorSettings));
+
+            //var typeDefs = types
+            //    .Select(t => new { Type = t, TsGenProps = t.GetCustomAttribute<TsGenAttribute>() })
+            //    .Select(t => ((t.TsGenProps?.HasCustomTypeBuilder ?? false) 
+            //        ? t.TsGenProps.TypeBuilder 
+            //        : t.Type.IsEnum
+            //            ? generatorSettings.DefaultEnumBuilder
+            //            : generatorSettings.DefaultTypeBuilder).Build(t.Type, true, generatorSettings));
             
 
             var dependentTypes = typeDefs
