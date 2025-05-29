@@ -10,7 +10,7 @@ namespace TsGen.TypeResolvers
     /// </summary>
     /// <remarks>
     /// This type resolver handles all collection types. <see cref="IDictionary{TKey, TValue}"/> types are mapped to 
-    /// Record&lt;TKey, TValue&gt; while <see cref="IDictionary"/> types are mapped to Record&lt;any, any&gt. The same 
+    /// Record&lt;TKey, TValue&gt; while <see cref="IDictionary"/> types are mapped to Record&lt;any, any&gt;. The same 
     /// goes for all other collections: collections that implement <see cref="IEnumerable{T}"/> are mapped to T[] while 
     /// non generic <see cref="IEnumerable"/> are mapped to any[].
     /// </remarks>

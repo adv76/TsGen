@@ -1,20 +1,30 @@
 ﻿using System.Diagnostics;
-using System.IO;
 using System.Reflection;
 using System.Text;
 using TsGen.Attributes;
-using TsGen.Builders.TypeBuilders;
 using TsGen.Enums;
 using TsGen.Extensions;
-using TsGen.Interfaces;
 using TsGen.Models;
 
 namespace TsGen
 {
+    /// <summary>
+    /// Static functions for building TypeScript types
+    /// </summary>
     public static class TypescriptGenerator
     {
         private const int MaxRecursionIterations = 5;
 
+        /// <summary>
+        /// Generates Type Definitions for an assembly
+        /// </summary>
+        /// <remarks>
+        /// All types annotated with the <see cref="TsGenAttribute"/> will be generated as well as any types
+        /// that those types rely on
+        /// </remarks>
+        /// <param name="assembly">The assembly to search for types</param>
+        /// <param name="generatorSettings">The generator settings to use</param>
+        /// <returns>An Enumerable of <see cref="TypeDefinition"/></returns>
         public static IEnumerable<TypeDefinition> GenerateTypeDefs(Assembly assembly, TsGenSettings generatorSettings)
             => GenerateTypeDefs(
                 assembly
@@ -23,6 +33,12 @@ namespace TsGen
                     .Union(generatorSettings.AdditionalTypes), 
                 generatorSettings);
 
+        /// <summary>
+        /// Generates Type Definitions from a list of types
+        /// </summary>
+        /// <param name="types">The types to generate</param>
+        /// <param name="generatorSettings">The generator settings to use</param>
+        /// <returns>An Enumerable of <see cref="TypeDefinition"/></returns>
         public static IEnumerable<TypeDefinition> GenerateTypeDefs(IEnumerable<Type> types, TsGenSettings generatorSettings)
             => GenerateTypeDefsInternal(types.Union(generatorSettings.AdditionalTypes), generatorSettings);
 
@@ -123,12 +139,15 @@ namespace TsGen
         {
             var typeFiles = GenerateTypeFiles(assembly, generatorSettings);
 
-            foreach (var file in typeFiles)
+            foreach (var dir in generatorSettings.OutputDirectories)
             {
-                var path = file.ToFile(generatorSettings.OutputDirectory, out var fileContents);
+                foreach (var file in typeFiles)
+                {
+                    var path = file.ToFile(dir, out var fileContents);
 
-                Directory.CreateDirectory(Path.GetDirectoryName(path)!); // TODO Fix
-                File.WriteAllText(path, fileContents);
+                    Directory.CreateDirectory(Path.GetDirectoryName(path)!); // TODO Fix
+                    File.WriteAllText(path, fileContents);
+                }
             }
         }
 
@@ -136,27 +155,21 @@ namespace TsGen
         {
             var typeFiles = GenerateTypeFiles(assembly, generatorSettings);
 
-            foreach (var file in typeFiles)
+            foreach (var dir in generatorSettings.OutputDirectories)
             {
-                var path = file.ToFile(generatorSettings.OutputDirectory, out var fileContents);
+                foreach (var file in typeFiles)
+                {
+                    var path = file.ToFile(dir, out var fileContents);
 
-                Directory.CreateDirectory(Path.GetDirectoryName(path)!); // TODO Fix
-                await File.WriteAllTextAsync(path, fileContents);
+                    Directory.CreateDirectory(Path.GetDirectoryName(path)!); // TODO Fix
+                    await File.WriteAllTextAsync(path, fileContents);
+                }
             }
         }
 
         private static IEnumerable<TypeDefinition> GenerateTypeDefsInternal(IEnumerable<Type> types, TsGenSettings generatorSettings, int level = 0)
         {
             var typeDefs = types.Select(t => t.GetTypeBuilder(generatorSettings).Build(t, true, generatorSettings));
-
-            //var typeDefs = types
-            //    .Select(t => new { Type = t, TsGenProps = t.GetCustomAttribute<TsGenAttribute>() })
-            //    .Select(t => ((t.TsGenProps?.HasCustomTypeBuilder ?? false) 
-            //        ? t.TsGenProps.TypeBuilder 
-            //        : t.Type.IsEnum
-            //            ? generatorSettings.DefaultEnumBuilder
-            //            : generatorSettings.DefaultTypeBuilder).Build(t.Type, true, generatorSettings));
-            
 
             var dependentTypes = typeDefs
                 .SelectMany(td => td.DependentTypes);

@@ -62,6 +62,8 @@ namespace TsGenCli.Commands
                 args = new List<string>() { "build", "-getTargetResult:Build", "-p:EnableDynamicLoading=true" };
             }
 
+            args.AddRange(context.Remaining.Raw);
+
             var processInfo = new ProcessStartInfo("dotnet")
             {
                 RedirectStandardOutput = true,
@@ -136,21 +138,24 @@ namespace TsGenCli.Commands
 
                         if (settings.OutputDirectory is not null)
                         {
-                            generatorSettings.OutputDirectory = settings.OutputDirectory;
+                            generatorSettings.OutputDirectories = new string[] { settings.OutputDirectory };
                         }
 
                         if (generatorSettings.ClearTargetDirectory)
                         {
-                            var directory = new DirectoryInfo(generatorSettings.OutputDirectory);
-
-                            foreach (var file in directory.EnumerateFiles())
+                            foreach (var outputDir in generatorSettings.OutputDirectories)
                             {
-                                file.Delete();
-                            }
+                                var directory = new DirectoryInfo(outputDir);
 
-                            foreach (var dir in directory.EnumerateDirectories())
-                            {
-                                dir.Delete(true);
+                                foreach (var file in directory.EnumerateFiles())
+                                {
+                                    file.Delete();
+                                }
+
+                                foreach (var dir in directory.EnumerateDirectories())
+                                {
+                                    dir.Delete(true);
+                                }
                             }
                         }
 
@@ -216,7 +221,7 @@ namespace TsGenCli.Commands
                         var space2 = runtime.IndexOf(' ', space1 + 1);
 
                         var type = runtime[0..space1];
-                        var version = runtime[(space1 + 1)..space2].Split('.').Select(int.Parse).ToArray();
+                        var version = runtime[(space1 + 1)..space2].Split('-')[0].Split('.').Select(int.Parse).ToArray();
                         var path = Path.Combine(runtime[(space2 + 1)..][1..^1], runtime[(space1 + 1)..space2]);
 
                         runtimeList.Add((type, version, path));

@@ -45,9 +45,9 @@ namespace TsGen
         public virtual Optionality DefaultNullablePropertyOptionality { get; set; } = Optionality.Optional;
 
         /// <summary>
-        /// The default output directory. It defaults to a directory called "TsGen" in the users Documents folder (<see cref="Environment.SpecialFolder.Personal"/>).
+        /// The directories to output to. It defaults to a single directory called "TsGen" in the users Documents folder (<see cref="Environment.SpecialFolder.Personal"/>).
         /// </summary>
-        public virtual string OutputDirectory { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "TsGen");
+        public virtual string[] OutputDirectories { get; set; } = new string[] { Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "TsGen") };
 
         /// <summary>
         /// Whether or not to clear the output directory before outputting the type files. Defaults to true.

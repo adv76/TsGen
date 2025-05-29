@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTsGenAspNetCore", "Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsGen.Zod", "TsGen.Zod\TsGen.Zod.csproj", "{E6C8D6F3-9187-459F-A20C-466B8639ADBD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDotNet10Preview", "TestDotNet10Preview\TestDotNet10Preview.csproj", "{46E4E02B-3C98-484F-8B2C-C8ABA9982C32}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{E6C8D6F3-9187-459F-A20C-466B8639ADBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6C8D6F3-9187-459F-A20C-466B8639ADBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6C8D6F3-9187-459F-A20C-466B8639ADBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46E4E02B-3C98-484F-8B2C-C8ABA9982C32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46E4E02B-3C98-484F-8B2C-C8ABA9982C32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46E4E02B-3C98-484F-8B2C-C8ABA9982C32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46E4E02B-3C98-484F-8B2C-C8ABA9982C32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
