@@ -5,9 +5,9 @@ using TsGen.Models;
 namespace TsGen.TypeResolvers
 {
     /// <summary>
-    /// Type resolver for date types
+    /// Resolves types using the overrides supplied in <see cref="TsGenSettings.ManualOverrides"/>
     /// </summary>
-    public class DateTimeTypeResolver : IPropertyTypeResolver
+    public class OverridesTypeResolver : IPropertyTypeResolver
     {
         /// <summary>
         /// Attempts to resovlve a Typescript type from the passed in type
@@ -19,25 +19,9 @@ namespace TsGen.TypeResolvers
         /// <returns>A resolved type if the type can be handled by this resolver (see list in class description) otherwise null.</returns>
         public PropertyType? Resolve(Type type, Optionality optionality, IPropertyTypeResolver recursiveResolver, TsGenSettings generatorSettings)
         {
-            if (type == typeof(DateTime))
+            if (generatorSettings.ManualOverrides.TryGetValue(type, out var newType))
             {
-                return new PropertyType(optionality, "string");
-            }
-            else if (type == typeof(DateTimeOffset))
-            {
-                return new PropertyType(optionality, "string");
-            }
-            else if (type == typeof(TimeSpan))
-            {
-                return new PropertyType(optionality, "string");
-            }
-            else if (type == typeof(DateOnly))
-            {
-                return new PropertyType(optionality, "string");
-            }
-            else if (type == typeof(TimeOnly))
-            {
-                return new PropertyType(optionality, "string");
+                return new PropertyType(optionality, newType);
             }
 
             return null;

@@ -13,6 +13,9 @@ namespace TsGen.TypeResolvers
     /// The order of resolution is:
     /// <list type="number">
     /// <item>
+    /// <term><see cref="OverridesTypeResolver"/> which handles all overrides specified in <see cref="TsGenSettings.ManualOverrides"/></term>
+    /// </item>
+    /// <item>
     /// <term><see cref="BuiltInTypeResolver"/> which handles primitives and a few basic built-in types.</term>
     /// </item>
     /// <item>
@@ -31,6 +34,7 @@ namespace TsGen.TypeResolvers
     /// </remarks>
     public class DefaultTypeResolver : IPropertyTypeResolver
     {
+        private readonly OverridesTypeResolver _overridesResolver = new();
         private readonly BuiltInTypeResolver _builtInResolver = new();
         private readonly CollectionTypeResolver _collectionResolver = new();
         private readonly GenericTypeResolver _genericResolver = new();
@@ -43,13 +47,14 @@ namespace TsGen.TypeResolvers
         /// <param name="type">The type to attempt to resolve.</param>
         /// <param name="optionality">Whether or not the resolved type should be optional.</param>
         /// <param name="recursiveResolver">The recursive resolver for resolving nested types.</param>
+        /// <param name="generatorSettings">The generator settings to use</param>
         /// <returns>A resolved type if the type can be handled by this resolver (see list in class description) otherwise null.</returns>
-        public PropertyType? Resolve(Type type, Optionality optionality, IPropertyTypeResolver recursiveResolver)
-            => _builtInResolver.Resolve(type, optionality, recursiveResolver)
-                ?? _collectionResolver.Resolve(type, optionality, recursiveResolver)
-                ?? _dateTimeResolver.Resolve(type, optionality, recursiveResolver)
-                ?? _genericResolver.Resolve(type, optionality, recursiveResolver)
-                ?? _objectResolver.Resolve(type, optionality, recursiveResolver);
-            
+        public PropertyType? Resolve(Type type, Optionality optionality, IPropertyTypeResolver recursiveResolver, TsGenSettings generatorSettings)
+            => _overridesResolver.Resolve(type, optionality, recursiveResolver, generatorSettings)
+                ?? _builtInResolver.Resolve(type, optionality, recursiveResolver, generatorSettings)
+                ?? _collectionResolver.Resolve(type, optionality, recursiveResolver, generatorSettings)
+                ?? _dateTimeResolver.Resolve(type, optionality, recursiveResolver, generatorSettings)
+                ?? _genericResolver.Resolve(type, optionality, recursiveResolver, generatorSettings)
+                ?? _objectResolver.Resolve(type, optionality, recursiveResolver, generatorSettings);
     }
 }

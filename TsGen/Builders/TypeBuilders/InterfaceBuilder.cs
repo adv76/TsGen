@@ -10,8 +10,18 @@ using TsGen.TypeResolvers;
 
 namespace TsGen.Builders.TypeBuilders
 {
+    /// <summary>
+    /// A type builder that outputs Typescript interfaces
+    /// </summary>
     public class InterfaceBuilder : ITypeBuilder
     {
+        /// <summary>
+        /// Builds a type definition for a type
+        /// </summary>
+        /// <param name="type">The type to build</param>
+        /// <param name="export">Whether it should be exported</param>
+        /// <param name="generatorSettings">The generator settings to use</param>
+        /// <returns>A type definition for the supplied type</returns>
         public TypeDefinition Build(Type type, bool export, TsGenSettings generatorSettings)
         {
             var properties = type.GetProperties()

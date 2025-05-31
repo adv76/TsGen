@@ -2,6 +2,7 @@
 using TsGen.Enums;
 using TsGen.Interfaces;
 using TsGen.NamingPolicies;
+using TsGen.TypeResolvers;
 
 namespace TsGen
 {
@@ -71,5 +72,14 @@ namespace TsGen
         /// This is useful if you want to include a type from a library that you don't have control over.
         /// </remarks>
         public virtual Type[] AdditionalTypes { get; } = Array.Empty<Type>();
+
+        /// <summary>
+        /// Manual global type overrides
+        /// </summary>
+        /// <remarks>
+        /// This setting is implementation opt-in. The type resolvers must support it. The defaults (and TsGenCli) 
+        /// support it via the <see cref="OverridesTypeResolver"/> (which is called in the <see cref="DefaultTypeResolver"/>).
+        /// </remarks>
+        public virtual Dictionary<Type, string> ManualOverrides { get; } = new();
     }
 }

@@ -22,8 +22,9 @@ namespace TsGen.TypeResolvers
         /// <param name="type">The type to attempt to resolve.</param>
         /// <param name="optionality">Whether or not the resolved type should be optional.</param>
         /// <param name="recursiveResolver">The recursive resolver for resolving nested types.</param>
+        /// <param name="generatorSettings">The generator settings to use</param>
         /// <returns>A resolved type if the type can be handled by this resolver (see list in class description) otherwise null.</returns>
-        public PropertyType? Resolve(Type type, Optionality optionality, IPropertyTypeResolver recursiveResolver)
+        public PropertyType? Resolve(Type type, Optionality optionality, IPropertyTypeResolver recursiveResolver, TsGenSettings generatorSettings)
         {
             var interfaces = type.GetInterfaces();
 
@@ -37,13 +38,13 @@ namespace TsGen.TypeResolvers
 
                 var deptTypes = new List<Type>();
 
-                var genericType0 = recursiveResolver.Resolve(genericParamTypes[0], Optionality.Required, recursiveResolver);
+                var genericType0 = recursiveResolver.Resolve(genericParamTypes[0], Optionality.Required, recursiveResolver, generatorSettings);
                 if (genericType0 is not null)
                 {
                     deptTypes.AddRange(genericType0.DependentTypes);
                 }
 
-                var genericType1 = recursiveResolver.Resolve(genericParamTypes[1], Optionality.Required, recursiveResolver);
+                var genericType1 = recursiveResolver.Resolve(genericParamTypes[1], Optionality.Required, recursiveResolver, generatorSettings);
                 if (genericType1 is not null)
                 {
                     deptTypes.AddRange(genericType1.DependentTypes);
@@ -71,7 +72,7 @@ namespace TsGen.TypeResolvers
 
                 var deptTypes = new List<Type>();
 
-                var genericType0 = recursiveResolver.Resolve(genericParamTypes[0], Optionality.Required, recursiveResolver);
+                var genericType0 = recursiveResolver.Resolve(genericParamTypes[0], Optionality.Required, recursiveResolver, generatorSettings);
                 if (genericType0 is not null)
                 {
                     deptTypes.AddRange(genericType0.DependentTypes);

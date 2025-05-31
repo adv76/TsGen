@@ -12,7 +12,7 @@ namespace TestTsGen.Level2
     internal class TestRecord1
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         [JsonPropertyName("DescriptionCustomName")]
         public string? Description { get; set; }
         public DateTime? Date { get; set; }
@@ -60,7 +60,7 @@ namespace Random.Records
     }
 
     [TsGen]
-    internal record TestRecord6(int[] Ints, TestRecord9 Record9);
+    internal record TestRecord6(int[] Ints, TestRecord9 Record9, DateOnly dateThatShouldBeANumber);
 }
 
 namespace Random

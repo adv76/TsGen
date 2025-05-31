@@ -9,5 +9,9 @@ namespace TestTsGen
         public override string[] OutputDirectories { get; set; } = [@"C:\Users\adv\Documents\types"];
         public override ExportStructure ExportStructure { get; set; } = ExportStructure.FileBased;
         public override Type[] AdditionalTypes { get; } = { typeof(NotAttributedOrReferencedRecord) };
+        public override Dictionary<Type, string> ManualOverrides { get; } = new()
+        {
+            { typeof(DateOnly), "number" }
+        };
     }
 }
