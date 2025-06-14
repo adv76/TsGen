@@ -13,7 +13,9 @@ namespace TsGen
     /// </summary>
     public static class TypescriptGenerator
     {
-        private const int MaxRecursionIterations = 5;
+        // Sets the maximum number of times to try to resolve types. If you have types that use other types that use other
+        // types and so on, you could get stuck in an infinite loop. This sets the maximum number of times to recurse.
+        private const int MaxRecursionIterations = 10;
 
         /// <summary>
         /// Generates Type Definitions for an assembly
@@ -42,12 +44,32 @@ namespace TsGen
         public static IEnumerable<TypeDefinition> GenerateTypeDefs(IEnumerable<Type> types, TsGenSettings generatorSettings)
             => GenerateTypeDefsInternal(types.Union(generatorSettings.AdditionalTypes), generatorSettings);
 
+        /// <summary>
+        /// Generates type files for an assembly
+        /// </summary>
+        /// <remarks>
+        /// Uses <see cref="GenerateTypeDefs(Assembly, TsGenSettings)"/> to generate the type definitions and then builds
+        /// the type files from the definitions
+        /// </remarks>
+        /// <param name="assembly">The assembly to search for types</param>
+        /// <param name="generatorSettings">The generator settings to use</param>
+        /// <returns>An Enumerable of <see cref="TypeFile"/></returns>
         public static IEnumerable<TypeFile> GenerateTypeFiles(Assembly assembly, TsGenSettings generatorSettings)
         {
             var typeDefs = GenerateTypeDefs(assembly, generatorSettings);
             return BuildTypeFiles(typeDefs, generatorSettings);
         }
 
+        /// <summary>
+        /// Generates type files for a list of types
+        /// </summary>
+        /// <remarks>
+        /// Uses <see cref="GenerateTypeDefs(IEnumerable{Type}, TsGenSettings)"/> to generate the type definitions and
+        /// then builds the type files from the defintions
+        /// </remarks>
+        /// <param name="types">The types to generate ts files for</param>
+        /// <param name="generatorSettings">The generator settings to use</param>
+        /// <returns>An Enumerable of <see cref="TypeFile"/></returns>
         public static IEnumerable<TypeFile> GenerateTypeFiles(IEnumerable<Type> types, TsGenSettings generatorSettings)
         {
             var typeDefs = GenerateTypeDefs(types, generatorSettings);
@@ -135,6 +157,15 @@ namespace TsGen
             return bldr.ToString();
         }
 
+        /// <summary>
+        /// Outputs TypeScript files to disk
+        /// </summary>
+        /// <remarks>
+        /// Generates a list of <see cref="TypeFile"/> using <see cref="GenerateTypeFiles(Assembly, TsGenSettings)"/>
+        /// and saves them to disk. The disk location is set in the generator settings.
+        /// </remarks>
+        /// <param name="assembly">The assembly to search for types.</param>
+        /// <param name="generatorSettings">The generator settings to use</param>
         public static void GenerateAndOutputTypeFiles(Assembly assembly, TsGenSettings generatorSettings)
         {
             var typeFiles = GenerateTypeFiles(assembly, generatorSettings);
@@ -151,6 +182,16 @@ namespace TsGen
             }
         }
 
+        /// <summary>
+        /// Asynchronously outputs TypeScript files to disk
+        /// </summary>
+        /// <remarks>
+        /// Generates a list of <see cref="TypeFile"/> using <see cref="GenerateTypeFiles(IEnumerable{Type}, TsGenSettings)"/>
+        /// and saves them to disk. The disk location is set in the generator settings.
+        /// </remarks>
+        /// <param name="assembly">The assembly to search for type</param>
+        /// <param name="generatorSettings">The generator settings to use</param>
+        /// <returns>A task for the operation</returns>
         public static async Task GenerateAndOutputTypeFilesAsync(Assembly assembly, TsGenSettings generatorSettings)
         {
             var typeFiles = GenerateTypeFiles(assembly, generatorSettings);
